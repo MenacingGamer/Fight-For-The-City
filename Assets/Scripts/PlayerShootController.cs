@@ -31,15 +31,20 @@ public class PlayerShootController : MonoBehaviour
     private void Update()
     {
         Vector3 mouseWorldPosition = Vector3.zero;
+
+
         Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
         Ray ray = Camera.main.ScreenPointToRay(screenCenterPoint);
         Transform hitTransform = null;
         if (Physics.Raycast(ray, out RaycastHit raycastHit, 999f, aimColliderLayerMask))
         {
-            debugTransform.position = raycastHit.point;
+          //  debugTransform.position = raycastHit.point;
             mouseWorldPosition = raycastHit.point;
             hitTransform = raycastHit.transform;
-            
+        }
+        else
+        {
+           mouseWorldPosition = ray.GetPoint(100f);
         }
 
         if (starterAssetsInputs.aim)
@@ -68,11 +73,13 @@ public class PlayerShootController : MonoBehaviour
             {
                 if(hitTransform.GetComponent<BulletTarget>() != null)
                 {
-                    Instantiate(zombieHitFX, debugTransform.position, Quaternion.identity);
+                    
+                    Instantiate(zombieHitFX, mouseWorldPosition, Quaternion.identity);
                 }
                 else
                 {
-                    Instantiate(bulletFX, debugTransform.position, Quaternion.identity);
+                  
+                    Instantiate(bulletFX, mouseWorldPosition, Quaternion.identity);
                 }
             }
            // Vector3 aimDir = (mouseWorldPosition - spawnBulletPosition.position).normalized;
