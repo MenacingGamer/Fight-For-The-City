@@ -8,11 +8,12 @@ public class Zombie : MonoBehaviour
     [SerializeField] public NavMeshAgent agent;
    
      private Transform player;
+     private Animator animator;
 
     [SerializeField] public LayerMask whatIsGround, whatIsPlayer;
-
+    [SerializeField] public GameObject fist;
     [SerializeField] public float health = 100f;
-
+   
     //patroling
     [SerializeField] public Vector3 walkPoint;
     [SerializeField] bool walkPointSet;
@@ -25,12 +26,14 @@ public class Zombie : MonoBehaviour
     //States
     [SerializeField] public bool playerInSightRange, playerInAttackRange;
     [SerializeField] public float sightRange, attackRange;
-
+    public bool isDead;
 
     private void Awake()
     {
-        
-         player = GameObject.FindGameObjectWithTag("Player").transform;
+        isDead = false;
+        fist.SetActive(false);
+        animator = GetComponent<Animator>();
+        player = GameObject.FindGameObjectWithTag("Player").transform;
         agent = GetComponent<NavMeshAgent>();
     }
  
@@ -39,10 +42,13 @@ public class Zombie : MonoBehaviour
     {
         playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
         playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
-
-        if (!playerInSightRange && !playerInAttackRange) Patroling();
-        if (playerInSightRange && !playerInAttackRange) ChasePlayer();
-        if (playerInAttackRange && playerInSightRange) AttackPlayer();
+        if (!isDead)
+        {
+            if (!playerInSightRange && !playerInAttackRange) Patroling();
+            if (playerInSightRange && !playerInAttackRange) ChasePlayer();
+            if (playerInAttackRange && playerInSightRange) AttackPlayer();
+        }
+      
 
     }
 
@@ -74,7 +80,7 @@ public class Zombie : MonoBehaviour
     private void ChasePlayer()
     {
         agent.SetDestination(player.position);
-        Debug.Log(player.position);
+      //  Debug.Log(player.position);
     }
 
     private void AttackPlayer()
@@ -86,15 +92,19 @@ public class Zombie : MonoBehaviour
         if (!alreadyAttacked)
         {
             //Attack here
-            Debug.Log("runnnnn!!!!! im eating youuuuuuuu");
+            animator.SetBool("isAttacking", true); 
+          //  Debug.Log("runnnnn!!!!! im eating youuuuuuuu");
 
             alreadyAttacked = true;
+            
             Invoke(nameof(ResetAttack), timeBetweenAttacks);
         }
     }
 
     private void ResetAttack()
     {
+        animator.SetBool("isAttacking", false);
+        TurnFistOFF();
         alreadyAttacked = false;
     }
 
@@ -110,6 +120,20 @@ public class Zombie : MonoBehaviour
 
     private void DestroyEnemy()
     {
-        Destroy(gameObject);
+        animator.SetBool("isDead", true);
+        isDead = true;
+        //Destroy(gameObject);
+    }
+
+
+    public void TurnFistOn()
+    {
+        fist.SetActive(true);
+    }
+
+
+    public void TurnFistOFF()
+    {
+        fist.SetActive(false);
     }
 }

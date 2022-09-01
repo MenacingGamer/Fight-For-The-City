@@ -15,14 +15,17 @@ public class PlayerShootController : MonoBehaviour
     [SerializeField] Transform spawnBulletPosition;
     [SerializeField] Transform bulletFX;
     [SerializeField] Transform zombieHitFX;
+    [SerializeField] int damage;
 
 
     private StarterAssetsInputs starterAssetsInputs;
     private ThirdPersonController thirdPersonController;
     private Animator animator;
+    private Zombie zombie;
 
     private void Awake()
     {
+        zombie = FindObjectOfType<Zombie>();
         thirdPersonController = GetComponent<ThirdPersonController>();
         starterAssetsInputs = GetComponent<StarterAssetsInputs>();
         animator = GetComponent<Animator>();
@@ -71,10 +74,11 @@ public class PlayerShootController : MonoBehaviour
         {
             if(hitTransform != null)
             {
-                if(hitTransform.GetComponent<BulletTarget>() != null)
+                if(hitTransform.GetComponent<Zombie>() != null)
                 {
                     
                     Instantiate(zombieHitFX, mouseWorldPosition, Quaternion.identity);
+                    hitTransform.gameObject.SendMessage("TakeDamage", damage);
                 }
                 else
                 {
