@@ -27,9 +27,11 @@ public class Zombie : MonoBehaviour
     [SerializeField] public bool playerInSightRange, playerInAttackRange;
     [SerializeField] public float sightRange, attackRange;
     public bool isDead;
+    public bool playerIsDead;
 
     private void Awake()
     {
+        playerIsDead = false;
         isDead = false;
         fist.SetActive(false);
         animator = GetComponent<Animator>();
@@ -112,10 +114,7 @@ public class Zombie : MonoBehaviour
     {
         health -= damage;
 
-        if (health <= 0) Invoke(nameof(DestroyEnemy), .5f);
-        
-
-        
+        if (health <= 0) Invoke(nameof(DestroyEnemy), .5f);   
     }
 
     private void DestroyEnemy()
@@ -135,5 +134,10 @@ public class Zombie : MonoBehaviour
     public void TurnFistOFF()
     {
         fist.SetActive(false);
+    }
+
+    public void PlayerIsDead()
+    {
+        playerIsDead = true;
     }
 }

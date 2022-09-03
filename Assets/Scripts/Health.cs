@@ -5,8 +5,15 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-
+    private LevelManager levelManager;
+    private Animator animator;
     public int health = 100;
+
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+        levelManager = FindObjectOfType<LevelManager>();    
+    }
 
     public void TakeDamage(int damage)
     {
@@ -18,6 +25,7 @@ public class Health : MonoBehaviour
 
     public void PlayerIsDead()
     {
-
+       
+        levelManager.EndLevel();
     }
 }
