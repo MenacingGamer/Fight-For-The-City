@@ -117,13 +117,17 @@ public class Zombie : MonoBehaviour
     {
         health -= damage;
         if (health == 70f || health == 50f || health == 20f) { audioManager.PlayGruntSound(); }
-        if (health <= 0) Invoke(nameof(DestroyEnemy), .5f);   
+        if (health <= 0)
+        {
+            isDead = true;
+            Invoke(nameof(DestroyEnemy), .5f);
+        }  
     }
 
     private void DestroyEnemy()
     {
         animator.SetBool("isDead", true);
-        isDead = true;
+        
         //Destroy(gameObject);
     }
 

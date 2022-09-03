@@ -16,6 +16,12 @@ public class AudioManager : MonoBehaviour
     [Range(0f, 100f)]
     [SerializeField] public float zombieGruntSoundFXVolume;
     [SerializeField] private AudioClip[] zombieGrunts;
+    [Range(0f, 100f)]
+    [SerializeField] public float zombiePunchSoundFXVolume;
+    [SerializeField] private AudioClip[] zombiePunchs;
+    [Range(0f, 100f)]
+    [SerializeField] public float playerTakeDamageSoundFXVolume;
+    [SerializeField] private AudioClip[] playerTakeDamageSounds;
 
     private AudioSource audioSource;
 
@@ -23,6 +29,16 @@ public class AudioManager : MonoBehaviour
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
+    }
+
+    public void PlayerDieSound()
+    {
+        audioSource.PlayOneShot(playerDieSound, playerDieSoundFXVolume);
+    }
+
+    public void PlayerTakeDamageSound()
+    {
+        audioSource.PlayOneShot(playerTakeDamageSounds[Random.Range(0, zombieImpacts.Length)], playerTakeDamageSoundFXVolume);
     }
 
     public void GunShotSound()
@@ -38,7 +54,11 @@ public class AudioManager : MonoBehaviour
     }
     public void PlayGruntSound()
     {
-        Debug.Log("PLAYING");
         audioSource.PlayOneShot(zombieGrunts[Random.Range(0, zombieGrunts.Length)], zombieGruntSoundFXVolume);
+    }
+
+    public void ZombiePunchSound()
+    {
+        audioSource.PlayOneShot(zombiePunchs[Random.Range(0, zombiePunchs.Length)], zombiePunchSoundFXVolume);
     }
 }
