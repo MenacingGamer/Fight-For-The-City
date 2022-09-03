@@ -10,7 +10,6 @@ public class PlayerShootController : MonoBehaviour
     [SerializeField] float normalSensitivity;
     [SerializeField] float aimSensitivity;
     [SerializeField] LayerMask aimColliderLayerMask;
-    [SerializeField] Transform debugTransform;
     [SerializeField] Transform pfBullet;
     [SerializeField] Transform spawnBulletPosition;
     [SerializeField] Transform bulletFX;
@@ -20,15 +19,18 @@ public class PlayerShootController : MonoBehaviour
 
     private StarterAssetsInputs starterAssetsInputs;
     private ThirdPersonController thirdPersonController;
+    private AudioManager audioManager;
     private Animator animator;
     private Zombie zombie;
 
     private void Awake()
     {
+        audioManager = GetComponent<AudioManager>();
         zombie = FindObjectOfType<Zombie>();
         thirdPersonController = GetComponent<ThirdPersonController>();
         starterAssetsInputs = GetComponent<StarterAssetsInputs>();
         animator = GetComponent<Animator>();
+       
     }
 
     private void Update()
@@ -72,11 +74,12 @@ public class PlayerShootController : MonoBehaviour
 
         if (starterAssetsInputs.shoot)
         {
+            audioManager.GunShotSound();
             if(hitTransform != null)
             {
                 if(hitTransform.GetComponent<Zombie>() != null)
                 {
-                    
+                    audioManager.ZombieImpactSounds();
                     Instantiate(zombieHitFX, mouseWorldPosition, Quaternion.identity);
                     hitTransform.gameObject.SendMessage("TakeDamage", damage);
                 }

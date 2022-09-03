@@ -28,6 +28,7 @@ public class Zombie : MonoBehaviour
     [SerializeField] public float sightRange, attackRange;
     public bool isDead;
     public bool playerIsDead;
+    private AudioManager audioManager;
 
     private void Awake()
     {
@@ -35,6 +36,7 @@ public class Zombie : MonoBehaviour
         isDead = false;
         fist.SetActive(false);
         animator = GetComponent<Animator>();
+        audioManager = GameObject.FindGameObjectWithTag("Player").GetComponent<AudioManager>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
         agent = GetComponent<NavMeshAgent>();
     }
@@ -42,6 +44,7 @@ public class Zombie : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+       
         playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
         playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
         if (!isDead)
@@ -113,7 +116,7 @@ public class Zombie : MonoBehaviour
     public void TakeDamage(int damage)
     {
         health -= damage;
-
+        if (health == 70f || health == 50f || health == 20f) { audioManager.PlayGruntSound(); }
         if (health <= 0) Invoke(nameof(DestroyEnemy), .5f);   
     }
 
