@@ -11,7 +11,7 @@ public class Zombie : MonoBehaviour
      private Animator animator;
 
     [SerializeField] public LayerMask whatIsGround, whatIsPlayer;
-    [SerializeField] public GameObject fist;
+    [SerializeField] private GameObject fist;
     [SerializeField] public float health = 100f;
    
     //patroling
@@ -27,12 +27,14 @@ public class Zombie : MonoBehaviour
     [SerializeField] public bool playerInSightRange, playerInAttackRange;
     [SerializeField] public float sightRange, attackRange;
     public bool isDead;
-    public bool playerIsDead;
+
+    private LevelManager levelManager;
     private AudioManager audioManager;
 
     private void Awake()
     {
-        playerIsDead = false;
+        levelManager = FindObjectOfType<LevelManager>();
+        fist = GetComponentInChildren<ZombieFist>().gameObject;
         isDead = false;
         fist.SetActive(false);
         animator = GetComponent<Animator>();
@@ -117,7 +119,7 @@ public class Zombie : MonoBehaviour
     {
         health -= damage;
         if (health == 70f || health == 50f || health == 20f) { audioManager.PlayGruntSound(); }
-        if (health <= 0)
+        if (health <= 0 && !isDead)
         {
             isDead = true;
             Invoke(nameof(DestroyEnemy), .5f);
@@ -127,8 +129,8 @@ public class Zombie : MonoBehaviour
     private void DestroyEnemy()
     {
         animator.SetBool("isDead", true);
+        levelManager.ZombieCount();
         
-        //Destroy(gameObject);
     }
 
 
@@ -143,8 +145,5 @@ public class Zombie : MonoBehaviour
         fist.SetActive(false);
     }
 
-    public void PlayerIsDead()
-    {
-        playerIsDead = true;
-    }
+  
 }

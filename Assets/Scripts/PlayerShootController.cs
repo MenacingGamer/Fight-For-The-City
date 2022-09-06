@@ -22,9 +22,11 @@ public class PlayerShootController : MonoBehaviour
     private AudioManager audioManager;
     private Animator animator;
     private Zombie zombie;
+    private Health health;
 
     private void Awake()
     {
+        health = GetComponentInChildren<Health>();
         audioManager = GetComponent<AudioManager>();
         zombie = FindObjectOfType<Zombie>();
         thirdPersonController = GetComponent<ThirdPersonController>();
@@ -52,7 +54,7 @@ public class PlayerShootController : MonoBehaviour
            mouseWorldPosition = ray.GetPoint(100f);
         }
 
-        if (starterAssetsInputs.aim)
+        if (starterAssetsInputs.aim && health.playerIsDead == false)
         {
             aimCamera.gameObject.SetActive(true);
             thirdPersonController.SetSensitivity(aimSensitivity);
@@ -72,7 +74,7 @@ public class PlayerShootController : MonoBehaviour
             animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), 0f, Time.deltaTime * 10f));
         }
 
-        if (starterAssetsInputs.shoot)
+        if (starterAssetsInputs.shoot && health.playerIsDead == false)
         {
             audioManager.GunShotSound();
             if(hitTransform != null)

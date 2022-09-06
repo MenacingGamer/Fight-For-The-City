@@ -6,9 +6,11 @@ public class ZombieFist : MonoBehaviour
 {
     [SerializeField] private Health health;
     [SerializeField] public int damage;
+  
 
     private void Awake()
     {
+       
         health = FindObjectOfType<Health>();  
     }
 
@@ -16,6 +18,7 @@ public class ZombieFist : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+           
             health.TakeDamage(damage);
             Debug.Log("hitting you");
         }

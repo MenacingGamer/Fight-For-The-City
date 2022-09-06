@@ -6,14 +6,17 @@ using UnityEngine.UI;
 
 public class Health : MonoBehaviour
 {
+   
     private AudioManager audioManager;
     private LevelManager levelManager;
     private Animator animator;
     public int health = 100;
     private Slider healthBarSlider;
+    public bool playerIsDead;
 
     private void Awake()
     {
+        playerIsDead = false;
         audioManager = GetComponent<AudioManager>();
         healthBarSlider = FindObjectOfType<Canvas>().GetComponentInChildren<Slider>();
         animator = GetComponent<Animator>();
@@ -27,26 +30,29 @@ public class Health : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        animator.SetBool("isTakingDamage", true);
-        Invoke(nameof(TakeDamageReset), .01f);
-        audioManager.ZombiePunchSound();
-        health -= damage;
-        audioManager.PlayerTakeDamageSound();
-        if (health <= 0)
+        if (!playerIsDead)
         {
-            animator.SetBool("isDead", true);
-            audioManager.PlayerDieSound();
-            Invoke(nameof(PlayerIsDead), .5f);
+            animator.SetBool("isTakingDamage", true);
+           // Invoke(nameof(TakeDamageReset), .01f);
+            audioManager.ZombiePunchSound();
+            health -= damage;
+            audioManager.PlayerTakeDamageSound();
+            if (health <= 0)
+            {
+                animator.SetBool("isDead", true);
+                playerIsDead = true;
+                audioManager.PlayerDieSound();
+                Invoke(nameof(PlayerDied), .5f);
+            }
         }
        
-
     }
     public void TakeDamageReset()
     {
         animator.SetBool("isTakingDamage", false);
     }
 
-    public void PlayerIsDead()
+    public void PlayerDied()
     {
        
         levelManager.EndLevel();

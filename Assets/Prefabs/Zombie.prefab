@@ -94,8 +94,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.38340205, y: 0.7550749, z: 0.52711385}
-  m_Center: {x: -0.12822857, y: -0.122463964, z: -0.014077804}
+  m_Size: {x: 0.50769585, y: 0.7550749, z: 0.52711385}
+  m_Center: {x: -0.066081166, y: -0.12246335, z: -0.014078483}
 --- !u!114 &491600222
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -650,7 +650,7 @@ MonoBehaviour:
   whatIsPlayer:
     serializedVersion: 2
     m_Bits: 8
-  fist: {fileID: 491600217}
+  fist: {fileID: 0}
   health: 100
   walkPoint: {x: 0, y: 0, z: 0}
   walkPointSet: 0
@@ -660,7 +660,7 @@ MonoBehaviour:
   playerInSightRange: 0
   playerInAttackRange: 0
   sightRange: 20
-  attackRange: 0.78
+  attackRange: 1
   isDead: 0
   playerIsDead: 0
 --- !u!195 &7476795871141902752
@@ -672,10 +672,10 @@ NavMeshAgent:
   m_GameObject: {fileID: 7476795872504080919}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.03774608
+  m_Radius: 1
   m_Speed: 5
   m_Acceleration: 8
-  avoidancePriority: 50
+  avoidancePriority: 99
   m_AngularSpeed: 180
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
@@ -740,7 +740,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7476795872504080923}
   m_LocalRotation: {x: -0.00095465645, y: 0.7071062, z: -0.70710593, w: -0.0010862001}
-  m_LocalPosition: {x: 0.0000011444091, y: -0.0001561749, z: 0.00782086}
+  m_LocalPosition: {x: 0.0000010681152, y: -0.0001561749, z: 0.00782086}
   m_LocalScale: {x: 0.99999994, y: 1.0000002, z: 1}
   m_Children:
   - {fileID: 7476795872503789117}
@@ -771,7 +771,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7476795872504080925}
   m_LocalRotation: {x: -0.012355729, y: -0.0021233484, z: 0.9999154, w: 0.0034908142}
-  m_LocalPosition: {x: 0.00010297612, y: 0.003070101, z: -0.0011750588}
+  m_LocalPosition: {x: 0.00010289983, y: 0.0030701004, z: -0.0011750588}
   m_LocalScale: {x: 1.000004, y: 1, z: 0.9999999}
   m_Children:
   - {fileID: 7476795872503789065}

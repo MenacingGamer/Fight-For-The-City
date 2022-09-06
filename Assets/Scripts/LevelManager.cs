@@ -3,14 +3,23 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class LevelManager : MonoBehaviour
 {
     [SerializeField] GameObject endLevelCanvas;
+    [SerializeField] TMP_Text zombiesKilledText;
+    [SerializeField] TMP_Text spawnTimerText;
+    [SerializeField] float spawnTimer;
+                    private int zombiesKilled;
+
 
     private void Awake()
     {
+       
+        spawnTimerText.text = "NEXT WAVE IN : " + spawnTimer;
         endLevelCanvas.SetActive(false);
+        zombiesKilledText.text = "ZOMBIES KILLED : " + zombiesKilled; 
     }
 
 
@@ -23,7 +32,33 @@ public class LevelManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(spawnTimer > 0)
+        {
+            spawnTimer -= Time.deltaTime;
+            TimerFormat(spawnTimer);
+        }
+        else
+        {
+            spawnTimer = 0;
+        }
+     
+       // spawnTimerText.text = "NEXT WAVE IN : " + spawnTimer;
+        zombiesKilledText.text = "ZOMBIES KILLED : " + zombiesKilled;
+    }
+
+    void TimerFormat(float currentTime)
+    {
+        currentTime += 1;
+
+        float minutes = Mathf.FloorToInt(currentTime / 60);
+        float seconds = Mathf.FloorToInt(currentTime % 60);
+
+        spawnTimerText.text = string.Format("{0:00} : {1:00}", minutes, seconds);
+    }
+
+    public void ZombieCount()
+    {
+        zombiesKilled++;
     }
 
     public void EndLevel()

@@ -14,6 +14,7 @@ namespace StarterAssets
 #endif
     public class ThirdPersonController : MonoBehaviour
     {
+       
         [Header("Player")]
         [Tooltip("Move speed of the character in m/s")]
         public float MoveSpeed = 2.0f;
@@ -87,6 +88,7 @@ namespace StarterAssets
         private float _rotationVelocity;
         private float _verticalVelocity;
         private float _terminalVelocity = 53.0f;
+        private Health health;
 
         // timeout deltatime
         private float _jumpTimeoutDelta;
@@ -136,6 +138,7 @@ namespace StarterAssets
 
         private void Start()
         {
+            health = GetComponentInChildren<Health>();
             _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
 
             _hasAnimator = TryGetComponent(out _animator);
@@ -157,10 +160,13 @@ namespace StarterAssets
         private void Update()
         {
             _hasAnimator = TryGetComponent(out _animator);
-
-            JumpAndGravity();
-            GroundedCheck();
-            Move();
+            if(health.playerIsDead == false)
+            {
+                JumpAndGravity();
+                GroundedCheck();
+                Move();
+            }
+         
         }
 
         private void LateUpdate()
