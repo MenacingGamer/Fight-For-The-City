@@ -10,13 +10,13 @@ public class LevelManager : MonoBehaviour
     [SerializeField] GameObject endLevelCanvas;
     [SerializeField] TMP_Text zombiesKilledText;
     [SerializeField] TMP_Text spawnTimerText;
-    [SerializeField] float spawnTimer;
+    [SerializeField] public float spawnTimer;
                     private int zombiesKilled;
-
+    private EnemySpawner enemySpawner;
 
     private void Awake()
     {
-       
+        enemySpawner = FindObjectOfType<EnemySpawner>();
         spawnTimerText.text = "NEXT WAVE IN : " + spawnTimer;
         endLevelCanvas.SetActive(false);
         zombiesKilledText.text = "ZOMBIES KILLED : " + zombiesKilled; 
@@ -40,6 +40,7 @@ public class LevelManager : MonoBehaviour
         else
         {
             spawnTimer = 0;
+            enemySpawner.SpawnEnemys();
         }
      
        // spawnTimerText.text = "NEXT WAVE IN : " + spawnTimer;
