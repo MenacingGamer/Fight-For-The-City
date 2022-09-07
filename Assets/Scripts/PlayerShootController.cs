@@ -10,6 +10,7 @@ public class PlayerShootController : MonoBehaviour
     [SerializeField] float normalSensitivity;
     [SerializeField] float aimSensitivity;
     [SerializeField] LayerMask aimColliderLayerMask;
+    [SerializeField] Transform debugTransform;
     [SerializeField] Transform pfBullet;
     [SerializeField] Transform spawnBulletPosition;
     [SerializeField] Transform bulletFX;
@@ -45,7 +46,7 @@ public class PlayerShootController : MonoBehaviour
         Transform hitTransform = null;
         if (Physics.Raycast(ray, out RaycastHit raycastHit, 999f, aimColliderLayerMask))
         {
-          //  debugTransform.position = raycastHit.point;
+            debugTransform.position = raycastHit.point;
             mouseWorldPosition = raycastHit.point;
             hitTransform = raycastHit.transform;
         }

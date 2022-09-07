@@ -32,11 +32,13 @@ public class Health : MonoBehaviour
     {
         if (!playerIsDead)
         {
-            animator.SetBool("isTakingDamage", true);
-           // Invoke(nameof(TakeDamageReset), .01f);
+            // animator.SetBool("isTakingDamage", true);
+            animator.SetLayerWeight(2, Mathf.Lerp(animator.GetLayerWeight(2), 1f, Time.deltaTime * 10f));
+            // Invoke(nameof(TakeDamageReset), .01f);
             audioManager.ZombiePunchSound();
             health -= damage;
             audioManager.PlayerTakeDamageSound();
+            Invoke(nameof(TakeDamageReset), .5f);
             if (health <= 0)
             {
                 animator.SetBool("isDead", true);
@@ -49,7 +51,8 @@ public class Health : MonoBehaviour
     }
     public void TakeDamageReset()
     {
-        animator.SetBool("isTakingDamage", false);
+        animator.SetLayerWeight(2, Mathf.Lerp(animator.GetLayerWeight(2), 0f, Time.deltaTime * 10f));
+       // animator.SetBool("isTakingDamage", false);
     }
 
     public void PlayerDied()
