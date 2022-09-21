@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using StarterAssets;
+using TMPro;
 
 public class PlayerShootController : MonoBehaviour
 {
@@ -16,6 +17,8 @@ public class PlayerShootController : MonoBehaviour
     [SerializeField] Transform bulletFX;
     [SerializeField] Transform zombieHitFX;
     [SerializeField] int damage;
+    [SerializeField] int ammo;
+    [SerializeField] TMP_Text ammoText;
 
 
     private StarterAssetsInputs starterAssetsInputs;
@@ -24,9 +27,13 @@ public class PlayerShootController : MonoBehaviour
     private Animator animator;
     private Zombie zombie;
     private Health health;
+    Vector3 mouseWorldPosition;
+    Transform hitTransform;
 
     private void Awake()
     {
+        ammo = 50;
+      //  ammoText.text = "AMMO : " + ammo;
         health = GetComponentInChildren<Health>();
         audioManager = GetComponent<AudioManager>();
         zombie = FindObjectOfType<Zombie>();
@@ -38,6 +45,23 @@ public class PlayerShootController : MonoBehaviour
 
     private void Update()
     {
+        ShootRay();
+       // ammoText.text = "AMMO : " + ammo;
+        
+            Shoot();
+       
+        Debug.Log(ammo);
+
+
+    }
+
+    void ShootRay()
+    {
+      
+    }
+
+    void Shoot()
+    {
         Vector3 mouseWorldPosition = Vector3.zero;
 
 
@@ -46,13 +70,13 @@ public class PlayerShootController : MonoBehaviour
         Transform hitTransform = null;
         if (Physics.Raycast(ray, out RaycastHit raycastHit, 999f, aimColliderLayerMask))
         {
-            debugTransform.position = raycastHit.point;
+           // debugTransform.position = raycastHit.point;
             mouseWorldPosition = raycastHit.point;
             hitTransform = raycastHit.transform;
         }
         else
         {
-           mouseWorldPosition = ray.GetPoint(100f);
+            mouseWorldPosition = ray.GetPoint(100f);
         }
 
         if (starterAssetsInputs.aim && health.playerIsDead == false)
@@ -64,7 +88,6 @@ public class PlayerShootController : MonoBehaviour
             Vector3 worldAimTarget = mouseWorldPosition;
             worldAimTarget.y = transform.position.y;
             Vector3 aimDirection = (worldAimTarget - transform.position).normalized;
-
             transform.forward = Vector3.Lerp(transform.forward, aimDirection, Time.deltaTime * 20f);
         }
         else
@@ -75,26 +98,29 @@ public class PlayerShootController : MonoBehaviour
             animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), 0f, Time.deltaTime * 10f));
         }
 
-        if (starterAssetsInputs.shoot && health.playerIsDead == false)
-        {
-            audioManager.GunShotSound();
-            if(hitTransform != null)
+        if (starterAssetsInputs.shoot && health.playerIsDead == false && ammo > 0)
             {
-                if(hitTransform.GetComponent<Zombie>() != null)
+                ammo--;
+                audioManager.GunShotSound();
+                if (hitTransform != null)
                 {
-                    audioManager.ZombieImpactSounds();
-                    Instantiate(zombieHitFX, mouseWorldPosition, Quaternion.identity);
-                    hitTransform.gameObject.SendMessage("TakeDamage", damage);
+                    if (hitTransform.GetComponent<Zombie>() != null)
+                    {
+                        audioManager.ZombieImpactSounds();
+                        Instantiate(zombieHitFX, mouseWorldPosition, Quaternion.identity);
+                        hitTransform.gameObject.SendMessage("TakeDamage", damage);
+                    }
+                    else
+                    {
+
+                        Instantiate(bulletFX, mouseWorldPosition, Quaternion.identity);
+                    }
                 }
-                else
-                {
-                  
-                    Instantiate(bulletFX, mouseWorldPosition, Quaternion.identity);
-                }
-            }
-           // Vector3 aimDir = (mouseWorldPosition - spawnBulletPosition.position).normalized;
-           //Instantiate(pfBullet, spawnBulletPosition.position, Quaternion.LookRotation(aimDir, Vector3.up));
-            starterAssetsInputs.shoot = false;
+                // Vector3 aimDir = (mouseWorldPosition - spawnBulletPosition.position).normalized;
+                //Instantiate(pfBullet, spawnBulletPosition.position, Quaternion.LookRotation(aimDir, Vector3.up));
+                starterAssetsInputs.shoot = false;
+            
         }
+     
     }
 }
