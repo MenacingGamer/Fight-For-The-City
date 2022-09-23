@@ -4,9 +4,11 @@ using UnityEngine;
 using Cinemachine;
 using StarterAssets;
 using TMPro;
+using UnityEngine.Animations.Rigging;
 
 public class PlayerShootController : MonoBehaviour
 {
+    [SerializeField] Rig rig;
     [SerializeField] CinemachineVirtualCamera aimCamera;
     [SerializeField] float normalSensitivity;
     [SerializeField] float aimSensitivity;
@@ -33,7 +35,7 @@ public class PlayerShootController : MonoBehaviour
     private void Awake()
     {
         ammo = 50;
-      //  ammoText.text = "AMMO : " + ammo;
+        ammoText.text = "AMMO : " + ammo;
         health = GetComponentInChildren<Health>();
         audioManager = GetComponent<AudioManager>();
         zombie = FindObjectOfType<Zombie>();
@@ -46,7 +48,7 @@ public class PlayerShootController : MonoBehaviour
     private void Update()
     {
         ShootRay();
-       // ammoText.text = "AMMO : " + ammo;
+        ammoText.text = "AMMO : " + ammo;
         
             Shoot();
        
@@ -70,7 +72,7 @@ public class PlayerShootController : MonoBehaviour
         Transform hitTransform = null;
         if (Physics.Raycast(ray, out RaycastHit raycastHit, 999f, aimColliderLayerMask))
         {
-           // debugTransform.position = raycastHit.point;
+            debugTransform.position = raycastHit.point;
             mouseWorldPosition = raycastHit.point;
             hitTransform = raycastHit.transform;
         }
@@ -81,6 +83,7 @@ public class PlayerShootController : MonoBehaviour
 
         if (starterAssetsInputs.aim && health.playerIsDead == false)
         {
+            rig.weight = 1;
             aimCamera.gameObject.SetActive(true);
             thirdPersonController.SetSensitivity(aimSensitivity);
             thirdPersonController.SetRotateOnMove(false);
@@ -92,6 +95,7 @@ public class PlayerShootController : MonoBehaviour
         }
         else
         {
+            rig.weight = 0;
             aimCamera.gameObject.SetActive(false);
             thirdPersonController.SetSensitivity(normalSensitivity);
             thirdPersonController.SetRotateOnMove(true);
