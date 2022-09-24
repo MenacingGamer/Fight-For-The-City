@@ -19,7 +19,7 @@ public class PlayerShootController : MonoBehaviour
     [SerializeField] Transform bulletFX;
     [SerializeField] Transform zombieHitFX;
     [SerializeField] int damage;
-    [SerializeField] int ammo;
+    [SerializeField] public int ammo;
     [SerializeField] TMP_Text ammoText;
 
 
