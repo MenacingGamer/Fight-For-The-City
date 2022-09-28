@@ -18,6 +18,7 @@ public class PlayerShootController : MonoBehaviour
     [SerializeField] Transform spawnBulletPosition;
     [SerializeField] Transform bulletFX;
     [SerializeField] Transform zombieHitFX;
+    [SerializeField] ParticleSystem muzzleFlash;
     [SerializeField] int damage;
     [SerializeField] public int ammo;
     [SerializeField] TMP_Text ammoText;
@@ -105,6 +106,7 @@ public class PlayerShootController : MonoBehaviour
         if (starterAssetsInputs.shoot && health.playerIsDead == false && ammo > 0)
             {
                 ammo--;
+                muzzleFlash.Play();
                 audioManager.GunShotSound();
                 if (hitTransform != null)
                 {

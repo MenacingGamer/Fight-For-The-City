@@ -100,7 +100,7 @@ public class Zombie : MonoBehaviour
         {
             //Attack here
             animator.SetBool("isAttacking", true); 
-          //  Debug.Log("runnnnn!!!!! im eating youuuuuuuu");
+            Debug.Log("runnnnn!!!!! im eating youuuuuuuu");
 
             alreadyAttacked = true;
             

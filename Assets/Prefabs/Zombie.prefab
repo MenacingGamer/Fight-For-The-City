@@ -655,7 +655,7 @@ MonoBehaviour:
   walkPoint: {x: 0, y: 0, z: 0}
   walkPointSet: 0
   walkPointRange: 20
-  timeBetweenAttacks: 0.5
+  timeBetweenAttacks: 0.1
   alreadyAttacked: 0
   playerInSightRange: 0
   playerInAttackRange: 0
