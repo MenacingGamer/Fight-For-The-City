@@ -22,7 +22,7 @@ public class PlayerShootController : MonoBehaviour
     [SerializeField] int damage;
     [SerializeField] public int ammo;
     [SerializeField] TMP_Text ammoText;
-
+    [SerializeField] public bool canShoot;
 
     private StarterAssetsInputs starterAssetsInputs;
     private ThirdPersonController thirdPersonController;
@@ -48,26 +48,17 @@ public class PlayerShootController : MonoBehaviour
 
     private void Update()
     {
-        ShootRay();
         ammoText.text = "AMMO : " + ammo;
-        
+        if  (health.playerIsDead == false && canShoot)
+        {
             Shoot();
-       
-        Debug.Log(ammo);
+        }
 
-
-    }
-
-    void ShootRay()
-    {
-      
     }
 
     void Shoot()
     {
         Vector3 mouseWorldPosition = Vector3.zero;
-
-
         Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
         Ray ray = Camera.main.ScreenPointToRay(screenCenterPoint);
         Transform hitTransform = null;
@@ -81,11 +72,8 @@ public class PlayerShootController : MonoBehaviour
         {
             mouseWorldPosition = ray.GetPoint(100f);
         }
-
-        if (starterAssetsInputs.aim && health.playerIsDead == false)
-        {
+             
             rig.weight = 1;
-            aimCamera.gameObject.SetActive(true);
             thirdPersonController.SetSensitivity(aimSensitivity);
             thirdPersonController.SetRotateOnMove(false);
             animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), 1f, Time.deltaTime * 10f));
@@ -93,17 +81,9 @@ public class PlayerShootController : MonoBehaviour
             worldAimTarget.y = transform.position.y;
             Vector3 aimDirection = (worldAimTarget - transform.position).normalized;
             transform.forward = Vector3.Lerp(transform.forward, aimDirection, Time.deltaTime * 20f);
-        }
-        else
-        {
-            rig.weight = 0;
-            aimCamera.gameObject.SetActive(false);
-            thirdPersonController.SetSensitivity(normalSensitivity);
-            thirdPersonController.SetRotateOnMove(true);
-            animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), 0f, Time.deltaTime * 10f));
-        }
+     
 
-        if (starterAssetsInputs.shoot && health.playerIsDead == false && ammo > 0)
+        if (starterAssetsInputs.shoot && ammo > 0)
             {
                 ammo--;
                 muzzleFlash.Play();
@@ -125,8 +105,12 @@ public class PlayerShootController : MonoBehaviour
                 // Vector3 aimDir = (mouseWorldPosition - spawnBulletPosition.position).normalized;
                 //Instantiate(pfBullet, spawnBulletPosition.position, Quaternion.LookRotation(aimDir, Vector3.up));
                 starterAssetsInputs.shoot = false;
-            
+
         }
-     
+        else if(starterAssetsInputs.shoot && ammo <= 0)
+        {
+            audioManager.EmptyGunSound();
+        }
+        starterAssetsInputs.shoot = false;
     }
 }

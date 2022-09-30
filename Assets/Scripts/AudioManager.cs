@@ -22,6 +22,8 @@ public class AudioManager : MonoBehaviour
     [Range(0f, 100f)]
     [SerializeField] public float playerTakeDamageSoundFXVolume;
     [SerializeField] private AudioClip[] playerTakeDamageSounds;
+    [SerializeField] public float emptyGunSoundFXVolume;
+    [SerializeField] private AudioClip emptyGunSound;
 
     private AudioSource audioSource;
 
@@ -60,5 +62,10 @@ public class AudioManager : MonoBehaviour
     public void ZombiePunchSound()
     {
         audioSource.PlayOneShot(zombiePunchs[Random.Range(0, zombiePunchs.Length)], zombiePunchSoundFXVolume);
+    }
+
+    public void EmptyGunSound()
+    {
+        audioSource.PlayOneShot(emptyGunSound, emptyGunSoundFXVolume);
     }
 }

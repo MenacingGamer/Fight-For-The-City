@@ -221,6 +221,7 @@ namespace StarterAssets
 
         private void Move()
         {
+              transform.rotation = Quaternion.Euler(0.0f, _mainCamera.transform.eulerAngles.y, 0.0f);
             // set target speed based on move speed, sprint speed and if sprint is pressed
             float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
 
@@ -269,10 +270,7 @@ namespace StarterAssets
                     RotationSmoothTime);
 
                 // rotate to face input direction relative to camera position
-                if (rotateOnMove)
-                {
-                    transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
-                }
+    
                
             }
 
@@ -286,7 +284,9 @@ namespace StarterAssets
             // update animator if using character
             if (_hasAnimator)
             {
-                _animator.SetFloat(_animIDSpeed, _animationBlend);
+                _animator.SetFloat("inputX", _input.move.x);
+                _animator.SetFloat("inputY", _input.move.y);
+                //_animator.SetFloat(_animIDSpeed, _animationBlend);
                 _animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
             }
         }

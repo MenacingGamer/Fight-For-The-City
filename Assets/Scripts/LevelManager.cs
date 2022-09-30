@@ -4,6 +4,8 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using StarterAssets;
+using System.Data;
 
 public class LevelManager : MonoBehaviour
 {
@@ -11,11 +13,16 @@ public class LevelManager : MonoBehaviour
     [SerializeField] TMP_Text zombiesKilledText;
     [SerializeField] TMP_Text spawnTimerText;
     [SerializeField] public float spawnTimer;
-                    private int zombiesKilled;
+                     private int zombiesKilled;
     private EnemySpawner enemySpawner;
+    private PlayerShootController shootController;
+    private StarterAssetsInputs _input;
+    public bool gamePaused;
 
     private void Awake()
     {
+        _input = FindObjectOfType<StarterAssetsInputs>();
+        shootController = FindObjectOfType<PlayerShootController>();    
         enemySpawner = FindObjectOfType<EnemySpawner>();
         spawnTimerText.text = "NEXT WAVE IN : " + spawnTimer;
         endLevelCanvas.SetActive(false);
@@ -26,13 +33,19 @@ public class LevelManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        shootController.canShoot = true;
+        gamePaused = false;  
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(spawnTimer > 0)
+        if (_input.pause) 
+        {
+            PauseGame();        
+        }
+
+        if (spawnTimer > 0)
         {
             spawnTimer -= Time.deltaTime;
             TimerFormat(spawnTimer);
@@ -55,6 +68,24 @@ public class LevelManager : MonoBehaviour
         float seconds = Mathf.FloorToInt(currentTime % 60);
 
         spawnTimerText.text = string.Format("{0:00} : {1:00}", minutes, seconds);
+    }
+
+    public void PauseGame()
+    {
+        if (!gamePaused)
+        {
+            Time.timeScale = 0;
+            shootController.canShoot = false;
+            gamePaused = true;
+           
+        }
+        else 
+        {
+            shootController.canShoot = true;
+            Time.timeScale = 1;
+            gamePaused = false;
+        }
+        _input.pause = false;
     }
 
     public void ZombieCount()
