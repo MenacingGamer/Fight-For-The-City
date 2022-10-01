@@ -10,12 +10,16 @@ public class Health : MonoBehaviour
     private AudioManager audioManager;
     private LevelManager levelManager;
     private Animator animator;
-    public int health = 100;
+    public int health = 25;
     private Slider healthBarSlider;
     public bool playerIsDead;
+    public GameObject damagePanel;
+  
+          
 
     private void Awake()
     {
+        damagePanel.SetActive(false);
         playerIsDead = false;
         audioManager = GetComponent<AudioManager>();
         healthBarSlider = FindObjectOfType<Canvas>().GetComponentInChildren<Slider>();
@@ -25,16 +29,20 @@ public class Health : MonoBehaviour
 
     private void Update()
     {
+      
         healthBarSlider.value = health;
+     
     }
+
+    
 
     public void TakeDamage(int damage)
     {
         if (!playerIsDead)
         {
-            // animator.SetBool("isTakingDamage", true);
-            animator.SetLayerWeight(2, Mathf.Lerp(animator.GetLayerWeight(2), 1f, Time.deltaTime * 10f));
-            // Invoke(nameof(TakeDamageReset), .01f);
+             animator.SetBool("isTakingDamage", true);
+
+            damagePanel.SetActive(true);
             audioManager.ZombiePunchSound();
             health -= damage;
             audioManager.PlayerTakeDamageSound();
@@ -51,8 +59,8 @@ public class Health : MonoBehaviour
     }
     public void TakeDamageReset()
     {
-        animator.SetLayerWeight(2, Mathf.Lerp(animator.GetLayerWeight(2), 0f, Time.deltaTime * 10f));
-       // animator.SetBool("isTakingDamage", false);
+        damagePanel.SetActive(false);
+        animator.SetBool("isTakingDamage", false);
     }
 
     public void PlayerDied()

@@ -5,13 +5,14 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] public GameObject[] enemyPrefabs;
-   
+    public bool spawnedEnemys;
 
     private LevelManager levelManager;
     
     // Start is called before the first frame update
     void Start()
     {
+        spawnedEnemys = false;
         levelManager = FindObjectOfType<LevelManager>();
     }
 
@@ -28,5 +29,6 @@ public class EnemySpawner : MonoBehaviour
           Instantiate(enemyPrefabs[i], transform.position, Quaternion.identity);
         }
         levelManager.spawnTimer = 90;
+        spawnedEnemys = true;
     }
 }

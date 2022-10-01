@@ -5,6 +5,9 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
     [Range(0f, 100f)]
+    [SerializeField] public float ammoPickupSoundFXVolume;
+    [SerializeField] private AudioClip ammoPickUp;
+    [Range(0f, 100f)]
     [SerializeField] public float gunSoundFXVolume;
     [SerializeField] private AudioClip gunShot;
     [Range(0f, 100f)]
@@ -22,6 +25,7 @@ public class AudioManager : MonoBehaviour
     [Range(0f, 100f)]
     [SerializeField] public float playerTakeDamageSoundFXVolume;
     [SerializeField] private AudioClip[] playerTakeDamageSounds;
+    [Range(0f, 100f)]
     [SerializeField] public float emptyGunSoundFXVolume;
     [SerializeField] private AudioClip emptyGunSound;
 
@@ -48,6 +52,10 @@ public class AudioManager : MonoBehaviour
         audioSource.PlayOneShot(gunShot, gunSoundFXVolume);
     }
 
+    public void AmmoPickUpSound()
+    {
+        audioSource.PlayOneShot(ammoPickUp, ammoPickupSoundFXVolume);
+    }
     public void ZombieImpactSounds()
     {
         

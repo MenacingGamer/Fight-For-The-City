@@ -9,6 +9,7 @@ using System.Data;
 
 public class LevelManager : MonoBehaviour
 {
+    [SerializeField] GameObject PausePanelCanvas;
     [SerializeField] GameObject endLevelCanvas;
     [SerializeField] TMP_Text zombiesKilledText;
     [SerializeField] TMP_Text spawnTimerText;
@@ -18,13 +19,16 @@ public class LevelManager : MonoBehaviour
     private PlayerShootController shootController;
     private StarterAssetsInputs _input;
     public bool gamePaused;
+    public bool playingRound;
 
     private void Awake()
     {
+       
         _input = FindObjectOfType<StarterAssetsInputs>();
         shootController = FindObjectOfType<PlayerShootController>();    
         enemySpawner = FindObjectOfType<EnemySpawner>();
         spawnTimerText.text = "NEXT WAVE IN : " + spawnTimer;
+        PausePanelCanvas.SetActive(false);
         endLevelCanvas.SetActive(false);
         zombiesKilledText.text = "ZOMBIES KILLED : " + zombiesKilled; 
     }
@@ -33,8 +37,11 @@ public class LevelManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         shootController.canShoot = true;
-        gamePaused = false;  
+        gamePaused = false;
+        playingRound = false;
     }
 
     // Update is called once per frame
@@ -45,15 +52,17 @@ public class LevelManager : MonoBehaviour
             PauseGame();        
         }
 
-        if (spawnTimer > 0)
+        if (spawnTimer > 0 && playingRound == false)
         {
             spawnTimer -= Time.deltaTime;
             TimerFormat(spawnTimer);
         }
         else
         {
+            playingRound = true;
             spawnTimer = 0;
-            enemySpawner.SpawnEnemys();
+            StartNewRound();
+           
         }
      
        // spawnTimerText.text = "NEXT WAVE IN : " + spawnTimer;
@@ -70,20 +79,33 @@ public class LevelManager : MonoBehaviour
         spawnTimerText.text = string.Format("{0:00} : {1:00}", minutes, seconds);
     }
 
+    public void StartNewRound()
+    {
+        if(enemySpawner.spawnedEnemys == false)
+        {
+            enemySpawner.SpawnEnemys();
+        }
+        
+    }
     public void PauseGame()
     {
         if (!gamePaused)
         {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
             Time.timeScale = 0;
             shootController.canShoot = false;
             gamePaused = true;
-           
+            PausePanelCanvas.SetActive(true);
         }
         else 
         {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
             shootController.canShoot = true;
             Time.timeScale = 1;
             gamePaused = false;
+            PausePanelCanvas.SetActive(false);
         }
         _input.pause = false;
     }
@@ -95,17 +117,22 @@ public class LevelManager : MonoBehaviour
 
     public void EndLevel()
     {
+        Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
         endLevelCanvas.SetActive(true);
     }
 
     public void MainMenu()
     {
+        Time.timeScale = 1;
+        gamePaused = false;
         SceneManager.LoadScene(0);
     }
 
     public void ReSpawn()
     {
+        Time.timeScale = 1;
+        gamePaused = false;
         SceneManager.LoadScene(1);
     }
 
