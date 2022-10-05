@@ -20,9 +20,11 @@ public class PlayerShootController : MonoBehaviour
     [SerializeField] Transform zombieHitFX;
     [SerializeField] ParticleSystem muzzleFlash;
     [SerializeField] int damage;
-    [SerializeField] public int ammo;
+    [SerializeField] public int bullets;
+    [SerializeField] public int clips;
     [SerializeField] TMP_Text ammoText;
     [SerializeField] public bool canShoot;
+    private bool reloading;
 
     private StarterAssetsInputs starterAssetsInputs;
     private ThirdPersonController thirdPersonController;
@@ -35,8 +37,9 @@ public class PlayerShootController : MonoBehaviour
 
     private void Awake()
     {
-        ammo = 50;
-        ammoText.text = "AMMO : " + ammo;
+        clips = 12;
+        bullets = 15;
+        ammoText.text = "AMMO : " + bullets + "/" + clips;
         health = GetComponentInChildren<Health>();
         audioManager = GetComponent<AudioManager>();
         zombie = FindObjectOfType<Zombie>();
@@ -48,7 +51,7 @@ public class PlayerShootController : MonoBehaviour
 
     private void Update()
     {
-        ammoText.text = "AMMO : " + ammo;
+        ammoText.text = "AMMO : " + bullets + "/" + clips;
         if  (health.playerIsDead == false && canShoot)
         {
             Shoot();
@@ -83,9 +86,9 @@ public class PlayerShootController : MonoBehaviour
             transform.forward = Vector3.Lerp(transform.forward, aimDirection, Time.deltaTime * 20f);
      
 
-        if (starterAssetsInputs.shoot && ammo > 0)
+        if (starterAssetsInputs.shoot && bullets >= 1)
             {
-                ammo--;
+                bullets--;
                 muzzleFlash.Play();
                 audioManager.GunShotSound();
                 if (hitTransform != null)
@@ -99,7 +102,7 @@ public class PlayerShootController : MonoBehaviour
                     else
                     {
 
-                        Instantiate(bulletFX, mouseWorldPosition, Quaternion.identity);
+                        Instantiate(bulletFX, mouseWorldPosition, Quaternion.LookRotation(mouseWorldPosition));
                     }
                 }
                 // Vector3 aimDir = (mouseWorldPosition - spawnBulletPosition.position).normalized;
@@ -107,10 +110,29 @@ public class PlayerShootController : MonoBehaviour
                 starterAssetsInputs.shoot = false;
 
         }
-        else if(starterAssetsInputs.shoot && ammo <= 0)
+        else if(starterAssetsInputs.shoot && bullets <= 0)
         {
-            audioManager.EmptyGunSound();
+            if (canShoot)
+            {
+                bullets = 0;
+                starterAssetsInputs.shoot = false;
+                audioManager.EmptyGunSound();
+                Invoke("Reload", 1f);
+                canShoot = false;
+            }
+          
+           
         }
-        starterAssetsInputs.shoot = false;
+       
+    }
+    public void Reload()
+    {
+        if (clips >= 1)
+        {
+            bullets = 15;
+            clips--;
+            canShoot = true;
+        }
+        Debug.Log("NEED AMMO");
     }
 }

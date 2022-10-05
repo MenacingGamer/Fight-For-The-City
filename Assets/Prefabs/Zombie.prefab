@@ -94,8 +94,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.50769585, y: 0.7550749, z: 0.52711385}
-  m_Center: {x: -0.066081166, y: -0.12246335, z: -0.014078483}
+  m_Size: {x: 0.9604947, y: 0.7550749, z: 0.7481267}
+  m_Center: {x: 0.16032016, y: -0.122465305, z: 0.000034210545}
 --- !u!114 &491600222
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -565,7 +565,7 @@ GameObject:
   - component: {fileID: 7476795871141902752}
   m_Layer: 0
   m_Name: Zombie
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -660,7 +660,7 @@ MonoBehaviour:
   playerInSightRange: 0
   playerInAttackRange: 0
   sightRange: 20
-  attackRange: 1
+  attackRange: 2
   isDead: 0
 --- !u!195 &7476795871141902752
 NavMeshAgent:
@@ -671,7 +671,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 7476795872504080919}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 1
+  m_Radius: 1.32
   m_Speed: 5
   m_Acceleration: 8
   avoidancePriority: 99

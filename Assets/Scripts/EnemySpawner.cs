@@ -5,30 +5,47 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] public GameObject[] enemyPrefabs;
-    public bool spawnedEnemys;
+    [SerializeField] public Transform[] enemySpawnPoints;
+    private Transform spawnPoint;
+    public int enemySpawnCount;
 
+  
     private LevelManager levelManager;
-    
+   
     // Start is called before the first frame update
     void Start()
     {
-        spawnedEnemys = false;
+    
         levelManager = FindObjectOfType<LevelManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+       
+    
+        if (levelManager.zombiesKilledThisRound == 5 && levelManager.state == LevelManager.State.fighting)
+        {
+           levelManager.zombiesKilledThisRound = 0;
+            levelManager.state = LevelManager.State.counting;
+            levelManager.spawnTimer = 60;
+        }
+            
     }
 
     public void SpawnEnemys()
     {
-        for (int i = 0; i < enemyPrefabs.Length; i++)
-        {
-          Instantiate(enemyPrefabs[i], transform.position, Quaternion.identity);
-        }
-        levelManager.spawnTimer = 90;
-        spawnedEnemys = true;
+
+              spawnPoint = enemySpawnPoints[Random.Range(0, enemySpawnPoints.Length)];
+
+
+            for (int i = 0; i < enemyPrefabs.Length; i++)
+            {
+                Instantiate(enemyPrefabs[i], spawnPoint.position, Quaternion.identity);
+            }
+             
     }
+
+    
+
 }

@@ -2235,7 +2235,7 @@ CharacterController:
   m_StepOffset: 0.25
   m_SkinWidth: 0.02
   m_MinMoveDistance: 0
-  m_Center: {x: 0, y: 0.93, z: 0}
+  m_Center: {x: 0, y: 1.02, z: 0}
 --- !u!114 &6123032902029637517
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2248,10 +2248,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26e54e5a728a9234ab24fcf1460ed8a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSpeed: 8
-  SprintSpeed: 12
+  MoveSpeed: 5
+  SprintSpeed: 8
   RotationSmoothTime: 0
-  SpeedChangeRate: 10
+  SpeedChangeRate: 35
   aimSensitivity: 1
   LandingAudioClip: {fileID: 8300000, guid: ff697d3070687ce4583faa0561a145a2, type: 3}
   FootstepAudioClips:
@@ -2271,7 +2271,7 @@ MonoBehaviour:
   JumpTimeout: 0.3
   FallTimeout: 0.15
   Grounded: 1
-  GroundedOffset: -0.14
+  GroundedOffset: -0.18
   GroundedRadius: 0.28
   GroundLayers:
     serializedVersion: 2
@@ -2443,7 +2443,7 @@ MonoBehaviour:
   bulletFX: {fileID: 7823053407619488552, guid: f02176bd448cc8b4d95e795bb31cc9d1, type: 3}
   zombieHitFX: {fileID: 4999884247506003346, guid: 4884c0569c126c547a9e8d2dcc288dd6, type: 3}
   muzzleFlash: {fileID: 7665799911305801264}
-  damage: 10
+  damage: 15
   ammo: 0
   ammoText: {fileID: 0}
   canShoot: 0
@@ -2555,7 +2555,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 001481c787010ba46afe6e53454a3649, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 15
+  health: 100
   playerIsDead: 0
   damagePanel: {fileID: 0}
 --- !u!114 &7539625497961890270
@@ -2570,31 +2570,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0423f86b7c8f69a41ba93f16e5ae18d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemPickupSoundFXVolume: 0.3
+  itemPickUp: {fileID: 8300000, guid: 463ff98e8f8f63948897121b62c6b66b, type: 3}
+  ammoPickupSoundFXVolume: 0.3
+  ammoPickUp: {fileID: 8300000, guid: 627ddac58bb0cc64f8d907f942dc0b98, type: 3}
+  healthPickupSoundFXVolume: 0.3
+  healthPickUp: {fileID: 8300000, guid: 5140954fbd5d1844690a84b1309fc72d, type: 3}
+  playerYeahSoundFXVolume: 0.3
+  yeahSound: {fileID: 8300000, guid: 8cad5c3205e5d9f44b892bb172fc6106, type: 3}
   gunSoundFXVolume: 1
   gunShot: {fileID: 8300000, guid: afe47ca10868aec4ea036412377c48e9, type: 3}
-  playerDieSoundFXVolume: 5
+  playerDieSoundFXVolume: 2
   playerDieSound: {fileID: 8300000, guid: 9bf580767bbc59f44a9c71f785b47746, type: 3}
-  zombieImpactSoundFXVolume: 20
+  zombieImpactSoundFXVolume: 5
   zombieImpacts:
   - {fileID: 8300000, guid: 85cd888890fa60d439796740619f142f, type: 3}
   - {fileID: 8300000, guid: 39bbfb78ecfa2a64da0ca1d7f57d1fff, type: 3}
   - {fileID: 8300000, guid: 2e8c0988f22a24f46b82c6e22622c215, type: 3}
   - {fileID: 8300000, guid: b1c7c7b112177ef41afa3f0f9c4e15c3, type: 3}
-  zombieGruntSoundFXVolume: 2
+  zombieGruntSoundFXVolume: 0.3
   zombieGrunts:
   - {fileID: 8300000, guid: 00a8b48381a8ba84f8b5258f2a264ec2, type: 3}
   - {fileID: 8300000, guid: 09283ed955b57184eb3bc875c5a466c8, type: 3}
   - {fileID: 8300000, guid: 03516be3712590a4a8f052d9f5fdc767, type: 3}
   - {fileID: 8300000, guid: 7486311a54ba96e47b497664537d61ad, type: 3}
   - {fileID: 8300000, guid: 323a25516de676f41ae484beec0721a9, type: 3}
-  zombiePunchSoundFXVolume: 1
+  zombiePunchSoundFXVolume: 0.3
   zombiePunchs:
   - {fileID: 8300000, guid: 37338279f43852a4996b2ce9141abe76, type: 3}
   - {fileID: 8300000, guid: 658c3087ee2ae2a40abae628c9d11d5a, type: 3}
   - {fileID: 8300000, guid: 888187881e3f50b4c9e7a4058074f460, type: 3}
   - {fileID: 8300000, guid: 072b71a559ab6c44ebc77a27a5bafd02, type: 3}
   - {fileID: 8300000, guid: be483aeae4f90724cb7f640d8a0699ba, type: 3}
-  playerTakeDamageSoundFXVolume: 3
+  playerTakeDamageSoundFXVolume: 0.3
   playerTakeDamageSounds:
   - {fileID: 8300000, guid: f7fc501e95ab2fc4d8f3807af6e9517d, type: 3}
   - {fileID: 8300000, guid: b9ccfaa0826ebef4f834fc43fab284db, type: 3}

@@ -17,8 +17,9 @@ public class AmmoPickUp : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
+            audioManager.ItemPickUpSound();
             audioManager.AmmoPickUpSound();
-            playerShootController.ammo += 50;
+            playerShootController.clips = 12;
             Destroy(this.gameObject);
         }
     }

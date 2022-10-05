@@ -30,6 +30,7 @@ public class Zombie : MonoBehaviour
 
     private LevelManager levelManager;
     private AudioManager audioManager;
+    private EnemySpawner enemySpawner;
 
     private void Awake()
     {
@@ -38,6 +39,7 @@ public class Zombie : MonoBehaviour
         isDead = false;
         fist.SetActive(false);
         animator = GetComponent<Animator>();
+        enemySpawner = FindObjectOfType<EnemySpawner>();
         audioManager = GameObject.FindGameObjectWithTag("Player").GetComponent<AudioManager>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
         agent = GetComponent<NavMeshAgent>();
@@ -93,14 +95,14 @@ public class Zombie : MonoBehaviour
     private void AttackPlayer()
     {
         agent.SetDestination(transform.position);
-
+        animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), 1f, Time.deltaTime * 10f));
         transform.LookAt(player);
 
         if (!alreadyAttacked)
         {
             //Attack here
             animator.SetBool("isAttacking", true); 
-            Debug.Log("runnnnn!!!!! im eating youuuuuuuu");
+          
 
             alreadyAttacked = true;
             
@@ -110,6 +112,7 @@ public class Zombie : MonoBehaviour
 
     private void ResetAttack()
     {
+        
         animator.SetBool("isAttacking", false);
         TurnFistOFF();
         alreadyAttacked = false;
@@ -122,14 +125,16 @@ public class Zombie : MonoBehaviour
         if (health <= 0 && !isDead)
         {
             isDead = true;
-            Invoke(nameof(DestroyEnemy), .5f);
+            animator.SetBool("isDead", true);
+            levelManager.ZombieCount();
+            Invoke(nameof(DestroyEnemy), 15f);
         }  
     }
 
     private void DestroyEnemy()
     {
-        animator.SetBool("isDead", true);
-        levelManager.ZombieCount();
+        
+       Destroy(gameObject);
         
     }
 

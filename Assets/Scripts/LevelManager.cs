@@ -9,64 +9,99 @@ using System.Data;
 
 public class LevelManager : MonoBehaviour
 {
+    public enum State
+    {
+        counting,
+        spawning,
+        fighting,
+    }
+    
     [SerializeField] GameObject PausePanelCanvas;
     [SerializeField] GameObject endLevelCanvas;
+    [SerializeField] TMP_Text waveText;
+    [SerializeField] TMP_Text waveCounterText;
+    [SerializeField] TMP_Text nextWaveText;
     [SerializeField] TMP_Text zombiesKilledText;
+    [SerializeField] TMP_Text zombiesKilledCounterText;
     [SerializeField] TMP_Text spawnTimerText;
-    [SerializeField] public float spawnTimer;
-                     private int zombiesKilled;
-    private EnemySpawner enemySpawner;
+    [SerializeField] public float spawnTimer;                                       
     private PlayerShootController shootController;
     private StarterAssetsInputs _input;
+    private EnemySpawner enemySpawner;
     public bool gamePaused;
-    public bool playingRound;
+    public int zombiesKilled;
+    public int zombiesKilledThisRound = 0;
+    public int waveCount;
+    public State state;
 
     private void Awake()
     {
-       
+        
         _input = FindObjectOfType<StarterAssetsInputs>();
         shootController = FindObjectOfType<PlayerShootController>();    
         enemySpawner = FindObjectOfType<EnemySpawner>();
-        spawnTimerText.text = "NEXT WAVE IN : " + spawnTimer;
+        nextWaveText.text = "NEXT WAVE ";      
+        zombiesKilledText.text = "ZOMBIES KILLED";
+        zombiesKilledCounterText.text = "" + zombiesKilled;
         PausePanelCanvas.SetActive(false);
         endLevelCanvas.SetActive(false);
-        zombiesKilledText.text = "ZOMBIES KILLED : " + zombiesKilled; 
+        waveText.enabled = false;
     }
 
 
     // Start is called before the first frame update
     void Start()
     {
+        zombiesKilledThisRound = 0;
+        state = State.counting;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         shootController.canShoot = true;
         gamePaused = false;
-        playingRound = false;
+       
     }
 
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(state);
         if (_input.pause) 
         {
             PauseGame();        
         }
 
-        if (spawnTimer > 0 && playingRound == false)
+        if (state == State.counting)
         {
+            
+            spawnTimerText.enabled = true;
+            nextWaveText.enabled = true;
+            waveText.enabled = false;
+            waveCounterText.enabled = false;
             spawnTimer -= Time.deltaTime;
             TimerFormat(spawnTimer);
+            if (spawnTimer <= 0)
+            {
+                state = State.spawning;
+                 StartNewRound();
+            }
         }
-        else
+        if(state == State.fighting)
         {
-            playingRound = true;
+            waveText.enabled = true;
+            waveCounterText.enabled = true;
+            spawnTimerText.enabled = false;
+            nextWaveText.enabled = false;
             spawnTimer = 0;
-            StartNewRound();
+            
            
         }
+        if (waveText != null) { waveText.text = " WAVE "; }
+        if (waveCounterText != null) { waveCounterText.text = ""+ waveCount;}
+         if(nextWaveText != null) { nextWaveText.text = " NEXT WAVE ";}
+        zombiesKilledText.text = "ZOMBIES KILLED";
+        zombiesKilledCounterText.text = "" + zombiesKilled;
+
      
-       // spawnTimerText.text = "NEXT WAVE IN : " + spawnTimer;
-        zombiesKilledText.text = "ZOMBIES KILLED : " + zombiesKilled;
     }
 
     void TimerFormat(float currentTime)
@@ -81,10 +116,17 @@ public class LevelManager : MonoBehaviour
 
     public void StartNewRound()
     {
-        if(enemySpawner.spawnedEnemys == false)
+       
+        
+        if(state == State.spawning)
         {
+            waveCount++;
             enemySpawner.SpawnEnemys();
+           state = State.fighting;
         }
+         
+           
+        
         
     }
     public void PauseGame()
@@ -113,7 +155,8 @@ public class LevelManager : MonoBehaviour
     public void ZombieCount()
     {
         zombiesKilled++;
-    }
+        zombiesKilledThisRound++;
+}
 
     public void EndLevel()
     {

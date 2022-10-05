@@ -5,8 +5,17 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
     [Range(0f, 100f)]
+    [SerializeField] public float itemPickupSoundFXVolume;
+    [SerializeField] private AudioClip itemPickUp;
+    [Range(0f, 100f)]
     [SerializeField] public float ammoPickupSoundFXVolume;
     [SerializeField] private AudioClip ammoPickUp;
+    [Range(0f, 100f)]
+    [SerializeField] public float healthPickupSoundFXVolume;
+    [SerializeField] private AudioClip healthPickUp;
+    [Range(0f, 100f)]
+    [SerializeField] public float playerYeahSoundFXVolume;
+    [SerializeField] private AudioClip yeahSound;
     [Range(0f, 100f)]
     [SerializeField] public float gunSoundFXVolume;
     [SerializeField] private AudioClip gunShot;
@@ -37,6 +46,16 @@ public class AudioManager : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
+    public void ItemPickUpSound()
+    {
+        audioSource.PlayOneShot(itemPickUp, itemPickupSoundFXVolume);
+    }
+
+    public void PlayerYeahSound()
+    {
+        audioSource.PlayOneShot(yeahSound, playerYeahSoundFXVolume);
+    }
+
     public void PlayerDieSound()
     {
         audioSource.PlayOneShot(playerDieSound, playerDieSoundFXVolume);
@@ -50,6 +69,11 @@ public class AudioManager : MonoBehaviour
     public void GunShotSound()
     {
         audioSource.PlayOneShot(gunShot, gunSoundFXVolume);
+    }
+
+    public void HealthPickUpSound()
+    {
+        audioSource.PlayOneShot(healthPickUp, healthPickupSoundFXVolume);
     }
 
     public void AmmoPickUpSound()
