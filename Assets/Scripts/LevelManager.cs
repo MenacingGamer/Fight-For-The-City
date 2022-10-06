@@ -64,7 +64,7 @@ public class LevelManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(state);
+       
         if (_input.pause) 
         {
             PauseGame();        
@@ -124,10 +124,7 @@ public class LevelManager : MonoBehaviour
             enemySpawner.SpawnEnemys();
            state = State.fighting;
         }
-         
-           
-        
-        
+   
     }
     public void PauseGame()
     {

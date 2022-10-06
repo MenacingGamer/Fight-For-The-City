@@ -40,8 +40,10 @@ public class Health : MonoBehaviour
     {
         if (!playerIsDead)
         {
-             animator.SetBool("isTakingDamage", true);
-
+            CameraShake.Instance.CamShake(5f, .5f);
+            animator.SetLayerWeight(2, Mathf.Lerp(animator.GetLayerWeight(1), .5f, Time.deltaTime * 20f));
+            //player aim turn off
+            animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(0), 1f, Time.deltaTime * 10f));
             damagePanel.SetActive(true);
             audioManager.ZombiePunchSound();
             health -= damage;
@@ -60,7 +62,10 @@ public class Health : MonoBehaviour
     public void TakeDamageReset()
     {
         damagePanel.SetActive(false);
-        animator.SetBool("isTakingDamage", false);
+        animator.SetLayerWeight(2, Mathf.Lerp(animator.GetLayerWeight(0), .5f, Time.deltaTime * 20f));
+        //player ain turn on
+        animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), 1f, Time.deltaTime * 10f));
+     
     }
 
     public void PlayerDied()

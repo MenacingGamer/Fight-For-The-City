@@ -7,7 +7,8 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] public GameObject[] enemyPrefabs;
     [SerializeField] public Transform[] enemySpawnPoints;
     private Transform spawnPoint;
-    public int enemySpawnCount;
+    public int enemySpawnCount = 5;
+    private int enemysToSpawn;
 
   
     private LevelManager levelManager;
@@ -15,16 +16,17 @@ public class EnemySpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-    
+        enemySpawnCount = 5;
         levelManager = FindObjectOfType<LevelManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-       
-    
-        if (levelManager.zombiesKilledThisRound == 5 && levelManager.state == LevelManager.State.fighting)
+        enemysToSpawn = enemySpawnCount * levelManager.waveCount; 
+        Debug.Log(enemysToSpawn);
+
+        if (levelManager.zombiesKilledThisRound == enemysToSpawn && levelManager.state == LevelManager.State.fighting)
         {
            levelManager.zombiesKilledThisRound = 0;
             levelManager.state = LevelManager.State.counting;
