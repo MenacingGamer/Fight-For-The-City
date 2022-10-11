@@ -6,8 +6,12 @@ public class HealthPickup : MonoBehaviour
 {
     private Health health;
     AudioManager audioManager;
+    SpawnItem spawnItem;
+
     private void Awake()
     {
+       
+        spawnItem = FindObjectOfType<SpawnItem>();
         health = FindObjectOfType<Health>();
         audioManager = FindObjectOfType<AudioManager>();
     }
@@ -15,10 +19,16 @@ public class HealthPickup : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            audioManager.PlayerYeahSound();
-            audioManager.HealthPickUpSound();
-            health.health = 100;
-            Destroy(this.gameObject);
+            if(health.health <= 90)
+            {
+                spawnItem.canSpawnHealth = true;
+                audioManager.PlayerYeahSound();
+                audioManager.HealthPickUpSound();
+                health.health = 100;
+                Destroy(this.gameObject);
+              
+            } 
+         
         }
     }
 }

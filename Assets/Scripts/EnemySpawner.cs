@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] public GameObject[] enemyPrefabs;
+    [SerializeField] public GameObject enemyPrefabs;
     [SerializeField] public Transform[] enemySpawnPoints;
     private Transform spawnPoint;
     public int enemySpawnCount = 5;
     private int enemysToSpawn;
+    private int spawned = 0;
 
   
     private LevelManager levelManager;
@@ -24,10 +25,11 @@ public class EnemySpawner : MonoBehaviour
     void Update()
     {
         enemysToSpawn = enemySpawnCount * levelManager.waveCount; 
-        Debug.Log(enemysToSpawn);
+      
 
         if (levelManager.zombiesKilledThisRound == enemysToSpawn && levelManager.state == LevelManager.State.fighting)
         {
+            spawned = 0;
            levelManager.zombiesKilledThisRound = 0;
             levelManager.state = LevelManager.State.counting;
             levelManager.spawnTimer = 60;
@@ -38,16 +40,33 @@ public class EnemySpawner : MonoBehaviour
     public void SpawnEnemys()
     {
 
-              spawnPoint = enemySpawnPoints[Random.Range(0, enemySpawnPoints.Length)];
+        enemysToSpawn = enemySpawnCount * levelManager.waveCount;
+    
+        StartCoroutine(Spawning());
+       
+       
 
-
-            for (int i = 0; i < enemyPrefabs.Length; i++)
-            {
-                Instantiate(enemyPrefabs[i], spawnPoint.position, Quaternion.identity);
-            }
-             
     }
 
-    
+      IEnumerator Spawning()
+    {
+       for(int i = 0; i < enemysToSpawn; i++)
+        {
+            Spawn();
+            yield return new WaitForSeconds(2f);
+        }
+        
+        levelManager.state = LevelManager.State.fighting;
+
+        yield break;
+      
+    }
+
+    public void Spawn()
+    {
+        spawnPoint = enemySpawnPoints[Random.Range(0, enemySpawnPoints.Length)];
+        Instantiate(enemyPrefabs, spawnPoint.position, Quaternion.identity);
+        spawned++;
+    }
 
 }

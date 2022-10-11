@@ -28,15 +28,17 @@ public class LevelManager : MonoBehaviour
     private PlayerShootController shootController;
     private StarterAssetsInputs _input;
     private EnemySpawner enemySpawner;
+    private SpawnItem spawnItem;
     public bool gamePaused;
     public int zombiesKilled;
     public int zombiesKilledThisRound = 0;
     public int waveCount;
+    public int itemSpawn;
     public State state;
 
     private void Awake()
     {
-        
+        spawnItem = FindObjectOfType<SpawnItem>();
         _input = FindObjectOfType<StarterAssetsInputs>();
         shootController = FindObjectOfType<PlayerShootController>();    
         enemySpawner = FindObjectOfType<EnemySpawner>();
@@ -56,7 +58,6 @@ public class LevelManager : MonoBehaviour
         state = State.counting;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        shootController.canShoot = true;
         gamePaused = false;
        
     }
@@ -85,7 +86,7 @@ public class LevelManager : MonoBehaviour
                  StartNewRound();
             }
         }
-        if(state == State.fighting)
+        if(state == State.spawning)
         {
             waveText.enabled = true;
             waveCounterText.enabled = true;
@@ -116,13 +117,20 @@ public class LevelManager : MonoBehaviour
 
     public void StartNewRound()
     {
-       
+     
         
         if(state == State.spawning)
         {
             waveCount++;
             enemySpawner.SpawnEnemys();
-           state = State.fighting;
+          if(waveCount % 2 == 0 && spawnItem.canSpawnAmmo == true)
+            {
+                spawnItem.SpawnAmmo();
+            }
+          if(waveCount % 4 == 0 && spawnItem.canSpawnHealth == true)
+            {
+                spawnItem.SpawnHealth();
+            }
         }
    
     }
@@ -133,7 +141,6 @@ public class LevelManager : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             Time.timeScale = 0;
-            shootController.canShoot = false;
             gamePaused = true;
             PausePanelCanvas.SetActive(true);
         }
@@ -141,7 +148,6 @@ public class LevelManager : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-            shootController.canShoot = true;
             Time.timeScale = 1;
             gamePaused = false;
             PausePanelCanvas.SetActive(false);

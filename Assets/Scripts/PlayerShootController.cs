@@ -2,116 +2,137 @@ using UnityEngine;
 using Cinemachine;
 using StarterAssets;
 using TMPro;
-
+using System.Collections;
+using UnityEngine.InputSystem;
 
 public class PlayerShootController : MonoBehaviour
 {
-  
-    [SerializeField] CinemachineVirtualCamera aimCamera;
-    [SerializeField] LayerMask aimColliderLayerMask;
-    [SerializeField] Transform pfBullet;
-    [SerializeField] Transform spawnBulletPosition;
-    [SerializeField] Transform bulletFX;
-    [SerializeField] Transform zombieHitFX;
-    [SerializeField] ParticleSystem muzzleFlash;
+
+    [SerializeField] float range = 100f;
+    [SerializeField] float fireRate = 15f;
+    [SerializeField] float reloadTime = 1f;
     [SerializeField] int damage;
     [SerializeField] public int bullets;
-    [SerializeField] public int clips;
+    [SerializeField] public int magazineSize;
+    [SerializeField] public int magazineCount;
+    [SerializeField] LayerMask aimColliderLayerMask;
+    [SerializeField] GameObject bulletFX;
+    [SerializeField] GameObject zombieHitFX;
+    [SerializeField] ParticleSystem muzzleFlash;
     [SerializeField] TMP_Text ammoText;
-    [SerializeField] public bool canShoot;
+
+    private bool canShoot = true;
     private bool reloading;
+    private float nextTimeToFire = 0;
     private StarterAssetsInputs starterAssetsInputs;
-    private ThirdPersonController thirdPersonController;
     private AudioManager audioManager;
     private Animator animator;
     private Health health;
- 
+    private PlayerInput _playerInput;
 
     private void Awake()
     {
         Cursor.lockState = CursorLockMode.Confined;
-        clips = 12;
-        bullets = 15;
-        ammoText.text = "AMMO : " + bullets + "/" + clips;
+        magazineCount = 12;
+        bullets = magazineSize;
+        ammoText.text = "AMMO : " + bullets + "/" + magazineCount;
         health = GetComponentInChildren<Health>();
         audioManager = GetComponent<AudioManager>();
-        thirdPersonController = GetComponent<ThirdPersonController>();
         starterAssetsInputs = GetComponent<StarterAssetsInputs>();
         animator = GetComponent<Animator>();
-        
+        reloading = false;
+        _playerInput = GetComponent<PlayerInput>();
     }
 
     private void Update()
-    {
-        
+    {   
         animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), 1f, Time.deltaTime * 10f));
-        ammoText.text = "AMMO : " + bullets + "/" + clips;
-        if  (health.playerIsDead == false && canShoot)
+        ammoText.text = "AMMO : " + bullets + "/" + magazineCount;
+        if (health.playerIsDead == true || reloading == true)
         {
-            if (starterAssetsInputs.shoot && bullets >= 1)
-            {
-                Shoot();
-            }
-           
-              else if (starterAssetsInputs.shoot && bullets <= 0)
-            {
-                if (canShoot)
-                {
-                    canShoot = false;
-                    bullets = 0;
-                    starterAssetsInputs.shoot = false;
-                    audioManager.EmptyGunSound();
-                    Invoke("Reload", 1f);
-                   
-                }
+            return;
+        }
+        if(magazineCount <= 0 && bullets <= 0)
+        {
+            magazineCount = 0;
+            audioManager.NeedAmmoSound();
+            reloading = true;
+            return;
+        }
+         
 
+        if (starterAssetsInputs.shoot && bullets <= 0)
+         {
+             audioManager.EmptyGunSound();
+            reloading = true;
+            StartCoroutine(Reload());
+          
+         }
 
-            }
+         if (starterAssetsInputs.shoot && bullets >= 1)
+         {
+    
+           Shoot();
+         }
+        starterAssetsInputs.shoot = false;
+    }
+
+       public void ReloadNow()
+    {
+        reloading = true;
+        StartCoroutine(Reload());
+    }
+
+     public IEnumerator Reload()
+    {
+        if (magazineCount >= 1)
+        {
+
+            yield return new WaitForSeconds(reloadTime);
+            bullets = magazineSize;
+            magazineCount--;
             starterAssetsInputs.shoot = false;
+            reloading = false;
+
+           
         }
 
     }
+
+
 
     void Shoot()
     {
-        bullets--;
-        muzzleFlash.Play();
-        audioManager.GunShotSound();
-        //shooting cam shake
-        CameraShake.Instance.CamShake(.5f, .1f);
-         
-        Ray ray = Camera.main.ViewportPointToRay(Vector3.one * 0.5f);
+            bullets--;
+            muzzleFlash.Play();
+            audioManager.GunShotSound();
+            //shooting cam shake
+            CameraShake.Instance.CamShake(.5f, .1f);
 
-        Debug.DrawRay(ray.origin, ray.direction * 100f, Color.red, 2f);
+            Ray ray = Camera.main.ViewportPointToRay(Vector3.one * 0.5f);
 
-        RaycastHit hitInfo;
-        
+            Debug.DrawRay(ray.origin, ray.direction * 100f, Color.red, 2f);
 
-        if (Physics.Raycast(ray, out hitInfo, 999f, aimColliderLayerMask))
-        {
-        
+            RaycastHit hitInfo;
 
-            if (hitInfo.collider.gameObject.GetComponent<Zombie>() != null)
+
+            if (Physics.Raycast(ray, out hitInfo, range, aimColliderLayerMask))
             {
-                audioManager.ZombieImpactSounds();
-                Instantiate(zombieHitFX, hitInfo.point, Quaternion.identity);
-                hitInfo.collider.gameObject.SendMessage("TakeDamage", damage);
+                if (hitInfo.collider.gameObject.GetComponent<Zombie>() != null)
+                {
+                    audioManager.ZombieImpactSounds();
+                    GameObject zomBlood = Instantiate(zombieHitFX, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
+                    Destroy(zomBlood, 2f);
+                    hitInfo.collider.gameObject.SendMessage("TakeDamage", damage);
+                }
+                else
+                {
+                    GameObject hitFX = Instantiate(bulletFX, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
+                    Destroy(hitFX, 2f);
+                }
             }
-            else
-            {
-
-                Instantiate(bulletFX, hitInfo.point, Quaternion.LookRotation(hitInfo.point));
-            }
-        }
+        
+                     starterAssetsInputs.shoot = false;    
     }
-    public void Reload()
-    {
-        if (clips >= 1)
-        {
-            bullets = 15;
-            clips--;
-            canShoot = true;
-        }
-        Debug.Log("NEED AMMO");
-    }
-}
+ 
+  }

@@ -51,7 +51,7 @@
                     "id": "693f04c8-e143-490d-a800-f93fb41de9b6",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "Press"
                 },
                 {
                     "name": "Pause",
@@ -178,7 +178,7 @@
                     "id": "ed66cbff-2900-4a62-8896-696503cfcd31",
                     "path": "<Pointer>/delta",
                     "interactions": "",
-                    "processors": "InvertVector2(invertX=false),ScaleVector2(x=0.05,y=0.05)",
+                    "processors": "InvertVector2(invertX=false,invertY=false),ScaleVector2(x=0.05,y=0.05)",
                     "groups": "KeyboardMouse",
                     "action": "Look",
                     "isComposite": false,
@@ -189,8 +189,19 @@
                     "id": "d1d171b6-19d8-47a6-ba3a-71b6a8e7b3c0",
                     "path": "<Gamepad>/rightStick",
                     "interactions": "",
-                    "processors": "InvertVector2(invertX=false),StickDeadzone,ScaleVector2(x=300,y=300)",
+                    "processors": "InvertVector2(invertX=false,invertY=false),ScaleVector2(x=0.5,y=0.5),StickDeadzone",
                     "groups": "Gamepad",
+                    "action": "Look",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cd88d45d-5164-4a74-9232-87c3bdef0742",
+                    "path": "<XInputController>/rightStick",
+                    "interactions": "",
+                    "processors": "InvertVector2(invertX=false,invertY=false)",
+                    "groups": "Xbox Controller",
                     "action": "Look",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -231,7 +242,18 @@
                 {
                     "name": "",
                     "id": "c8fcd86e-dcfd-4f88-8e93-b638cdbf3320",
-                    "path": "<Gamepad>/leftTrigger",
+                    "path": "<XInputController>/leftStickPress",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Xbox Controller",
+                    "action": "Sprint",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4739f6a2-29b3-40f3-ba46-b675e8c936d5",
+                    "path": "<Gamepad>/leftStickPress",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
@@ -302,6 +324,93 @@
                     "processors": "",
                     "groups": "KeyboardMouse",
                     "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "UI",
+            "id": "d2a1fd28-4dd8-4818-b74b-09f933d240f1",
+            "actions": [
+                {
+                    "name": "Mouse",
+                    "type": "Value",
+                    "id": "4a1c4709-b1d5-4b63-b1ea-13bc76979da1",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "StickMove",
+                    "type": "Value",
+                    "id": "77925dd1-5b59-4dc3-8fdc-c6377a0aa4b0",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Button",
+                    "type": "Button",
+                    "id": "1edbce2e-708a-48d3-bcde-d2857a118b0f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "1962bb3d-a0f6-4fea-bf19-cbe6ef5b5765",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "Mouse",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c4b8f45a-cdf5-4d07-a6e0-902b1ea21554",
+                    "path": "<XInputController>/leftStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Xbox Controller",
+                    "action": "StickMove",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2c28bd31-d34e-42ee-95cd-7e750ee89c8c",
+                    "path": "<XInputController>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Xbox Controller",
+                    "action": "Button",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d3c01595-4076-4fda-bac8-65a9ed4ad311",
+                    "path": "<XInputController>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Xbox Controller",
+                    "action": "Button",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a67c04d6-4104-4a6e-9d33-adb69cb85e68",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "Button",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -53,8 +53,8 @@ public class Zombie : MonoBehaviour
         playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
         if (!isDead)
         {
-            if (!playerInSightRange && !playerInAttackRange) Patroling();
-            if (playerInSightRange && !playerInAttackRange) ChasePlayer();
+           /// if (!playerInSightRange && !playerInAttackRange) Patroling();
+            ChasePlayer();
             if (playerInAttackRange && playerInSightRange) AttackPlayer();
         }
       
@@ -101,8 +101,6 @@ public class Zombie : MonoBehaviour
         if (!alreadyAttacked)
         {
             //Attack here
-            animator.SetBool("isAttacking", true); 
-          
 
             alreadyAttacked = true;
             
@@ -112,8 +110,6 @@ public class Zombie : MonoBehaviour
 
     private void ResetAttack()
     {
-        
-        animator.SetBool("isAttacking", false);
         TurnFistOFF();
         alreadyAttacked = false;
     }
@@ -124,6 +120,7 @@ public class Zombie : MonoBehaviour
         if (health == 70f || health == 50f || health == 20f) { audioManager.PlayGruntSound(); }
         if (health <= 0 && !isDead)
         {
+            animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(0), 1f, Time.deltaTime * 10f));
             isDead = true;
             animator.SetBool("isDead", true);
             levelManager.ZombieCount();

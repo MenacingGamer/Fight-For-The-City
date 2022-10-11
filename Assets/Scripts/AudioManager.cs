@@ -11,6 +11,9 @@ public class AudioManager : MonoBehaviour
     [SerializeField] public float ammoPickupSoundFXVolume;
     [SerializeField] private AudioClip ammoPickUp;
     [Range(0f, 100f)]
+    [SerializeField] public float needAmmoSoundFXVolume;
+    [SerializeField] private AudioClip needAmmo;
+    [Range(0f, 100f)]
     [SerializeField] public float healthPickupSoundFXVolume;
     [SerializeField] private AudioClip healthPickUp;
     [Range(0f, 100f)]
@@ -74,6 +77,11 @@ public class AudioManager : MonoBehaviour
     public void HealthPickUpSound()
     {
         audioSource.PlayOneShot(healthPickUp, healthPickupSoundFXVolume);
+    }
+
+    public void NeedAmmoSound()
+    {
+        audioSource.PlayOneShot(needAmmo, needAmmoSoundFXVolume);
     }
 
     public void AmmoPickUpSound()
