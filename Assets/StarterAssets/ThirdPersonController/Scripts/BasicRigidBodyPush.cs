@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+
 public class BasicRigidBodyPush : MonoBehaviour
 {
 	public LayerMask pushLayers;
@@ -9,6 +10,7 @@ public class BasicRigidBodyPush : MonoBehaviour
 	private void OnControllerColliderHit(ControllerColliderHit hit)
 	{
 		if (canPush) PushRigidBodies(hit);
+		
 	}
 
 	private void PushRigidBodies(ControllerColliderHit hit)

@@ -46,7 +46,7 @@ public class PlayerShootController : MonoBehaviour
 
     private void Update()
     {   
-        animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), 1f, Time.deltaTime * 10f));
+      
         ammoText.text = "AMMO : " + bullets + "/" + magazineCount;
         if (health.playerIsDead == true || reloading == true)
         {
@@ -103,7 +103,8 @@ public class PlayerShootController : MonoBehaviour
 
     void Shoot()
     {
-            bullets--;
+       
+        bullets--;
             muzzleFlash.Play();
             audioManager.GunShotSound();
             //shooting cam shake
@@ -131,8 +132,8 @@ public class PlayerShootController : MonoBehaviour
                     Destroy(hitFX, 2f);
                 }
             }
-        
-                     starterAssetsInputs.shoot = false;    
+       
+        starterAssetsInputs.shoot = false;    
     }
  
   }

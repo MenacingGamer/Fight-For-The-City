@@ -105,6 +105,7 @@ namespace StarterAssets
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
         private PlayerInput _playerInput;
 #endif
+        private BasicRigidBodyPush basicRigidBodyPush;
         private Animator _animator;
         private CharacterController _controller;
         private StarterAssetsInputs _input;
@@ -141,7 +142,7 @@ namespace StarterAssets
         {
             health = GetComponentInChildren<Health>();
             _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
-
+            basicRigidBodyPush = GetComponent<BasicRigidBodyPush>();
             _hasAnimator = TryGetComponent(out _animator);
             _controller = GetComponent<CharacterController>();
             _input = GetComponent<StarterAssetsInputs>();
@@ -163,9 +164,15 @@ namespace StarterAssets
             _hasAnimator = TryGetComponent(out _animator);
             if(health.playerIsDead == false)
             {
+                _animator.SetLayerWeight(1, Mathf.Lerp(_animator.GetLayerWeight(1), 1f, Time.deltaTime * 10f));
                 JumpAndGravity();
                 GroundedCheck();
                 Move();
+                if(basicRigidBodyPush.canPush == true)
+                {
+                 _animator.SetLayerWeight(1, Mathf.Lerp(_animator.GetLayerWeight(0), 0f, Time.deltaTime * 10f));
+                }
+               
             }
          
         }
@@ -183,6 +190,25 @@ namespace StarterAssets
             _animIDFreeFall = Animator.StringToHash("FreeFall");
             _animIDMotionSpeed = Animator.StringToHash("MotionSpeed");
         }
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.gameObject.GetComponent<Rigidbody>() != null)
+            {
+                basicRigidBodyPush.canPush = true;
+                _animator.SetBool("isPushing", true);
+                
+            }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.gameObject.GetComponent<Rigidbody>() != null)
+            {
+                basicRigidBodyPush.canPush = false;
+                _animator.SetBool("isPushing", false);
+             
+            }
+        }
 
         private void GroundedCheck()
         {
@@ -195,6 +221,7 @@ namespace StarterAssets
             // update animator if using character
             if (_hasAnimator)
             {
+  
                 _animator.SetBool(_animIDGrounded, Grounded);
             }
         }
@@ -298,6 +325,7 @@ namespace StarterAssets
         {
             if (Grounded)
             {
+               
                 // reset the fall timeout timer
                 _fallTimeoutDelta = FallTimeout;
 
@@ -317,6 +345,7 @@ namespace StarterAssets
                 // Jump
                 if (_input.jump && _jumpTimeoutDelta <= 0.0f)
                 {
+                    _animator.SetLayerWeight(1, Mathf.Lerp(_animator.GetLayerWeight(0), 0f, Time.deltaTime * 10f));
                     // the square root of H * -2 * G = how much velocity needed to reach desired height
                     _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
 
@@ -324,6 +353,7 @@ namespace StarterAssets
                     if (_hasAnimator)
                     {
                         _animator.SetBool(_animIDJump, true);
+                       
                     }
                 }
 
@@ -354,6 +384,7 @@ namespace StarterAssets
 
                 // if we are not grounded, do not jump
                 _input.jump = false;
+               
             }
 
             // apply gravity over time if under terminal (multiply by delta time twice to linearly speed up over time)
