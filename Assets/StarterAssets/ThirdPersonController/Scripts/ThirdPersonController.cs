@@ -110,6 +110,7 @@ namespace StarterAssets
         private CharacterController _controller;
         private StarterAssetsInputs _input;
         private GameObject _mainCamera;
+        private AudioManager _audioManager;
         private bool rotateOnMove = true;
 
         private const float _threshold = 0.01f;
@@ -140,6 +141,7 @@ namespace StarterAssets
 
         private void Start()
         {
+            _audioManager = FindObjectOfType<AudioManager>();
             health = GetComponentInChildren<Health>();
             _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
             basicRigidBodyPush = GetComponent<BasicRigidBodyPush>();
@@ -345,6 +347,7 @@ namespace StarterAssets
                 // Jump
                 if (_input.jump && _jumpTimeoutDelta <= 0.0f)
                 {
+                    _audioManager.PlayerJumpSound();
                     _animator.SetLayerWeight(1, Mathf.Lerp(_animator.GetLayerWeight(0), 0f, Time.deltaTime * 10f));
                     // the square root of H * -2 * G = how much velocity needed to reach desired height
                     _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);

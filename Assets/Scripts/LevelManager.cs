@@ -18,6 +18,8 @@ public class LevelManager : MonoBehaviour
     
     [SerializeField] GameObject PausePanelCanvas;
     [SerializeField] GameObject endLevelCanvas;
+    [SerializeField] GameObject _startedWaveText;
+    [SerializeField] TMP_Text startedWaveText;
     [SerializeField] TMP_Text waveText;
     [SerializeField] TMP_Text waveCounterText;
     [SerializeField] TMP_Text nextWaveText;
@@ -29,6 +31,8 @@ public class LevelManager : MonoBehaviour
     private StarterAssetsInputs _input;
     private EnemySpawner enemySpawner;
     private SpawnItem spawnItem;
+    private AudioManager audioManager;
+   // private ObjectivesManager objectivesManager;
     public bool gamePaused;
     public int zombiesKilled;
     public int zombiesKilledThisRound = 0;
@@ -38,6 +42,8 @@ public class LevelManager : MonoBehaviour
 
     private void Awake()
     {
+      //  objectivesManager = FindObjectOfType<ObjectivesManager>();
+        audioManager = FindObjectOfType<AudioManager>();    
         spawnItem = FindObjectOfType<SpawnItem>();
         _input = FindObjectOfType<StarterAssetsInputs>();
         shootController = FindObjectOfType<PlayerShootController>();    
@@ -48,6 +54,7 @@ public class LevelManager : MonoBehaviour
         PausePanelCanvas.SetActive(false);
         endLevelCanvas.SetActive(false);
         waveText.enabled = false;
+        _startedWaveText.SetActive(false);
     }
 
 
@@ -96,6 +103,8 @@ public class LevelManager : MonoBehaviour
             
            
         }
+        if(state == State.fighting) { _startedWaveText.SetActive(false); }
+            startedWaveText.text = "WAVE " + waveCount;
         if (waveText != null) { waveText.text = " WAVE "; }
         if (waveCounterText != null) { waveCounterText.text = ""+ waveCount;}
          if(nextWaveText != null) { nextWaveText.text = " NEXT WAVE ";}
@@ -122,6 +131,10 @@ public class LevelManager : MonoBehaviour
         if(state == State.spawning)
         {
             waveCount++;
+            _startedWaveText.SetActive(true);
+            audioManager.WaveStartSound();
+           
+          
             enemySpawner.SpawnEnemys();
           if(waveCount % 2 == 0 && spawnItem.canSpawnAmmo == true)
             {
@@ -132,7 +145,7 @@ public class LevelManager : MonoBehaviour
                 spawnItem.SpawnHealth();
             }
         }
-   
+       
     }
     public void PauseGame()
     {

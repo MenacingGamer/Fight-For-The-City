@@ -11,7 +11,7 @@ public class EnemySpawner : MonoBehaviour
     private int enemysToSpawn;
     private int spawned = 0;
 
-  
+    private AudioManager audioManager;
     private LevelManager levelManager;
    
     // Start is called before the first frame update
@@ -19,6 +19,7 @@ public class EnemySpawner : MonoBehaviour
     {
         enemySpawnCount = 5;
         levelManager = FindObjectOfType<LevelManager>();
+        audioManager = FindObjectOfType<AudioManager>();
     }
 
     // Update is called once per frame
@@ -29,10 +30,12 @@ public class EnemySpawner : MonoBehaviour
 
         if (levelManager.zombiesKilledThisRound == enemysToSpawn && levelManager.state == LevelManager.State.fighting)
         {
+           
             spawned = 0;
            levelManager.zombiesKilledThisRound = 0;
             levelManager.state = LevelManager.State.counting;
             levelManager.spawnTimer = 60;
+            audioManager.WaveEndSound();
         }
             
     }

@@ -10,16 +10,30 @@ public class ObjectivesManager : MonoBehaviour
     [SerializeField] GameObject letter_E;
     [SerializeField] GameObject letterE;
     [SerializeField] GameObject letter_K;
-
+    [SerializeField] GameObject[] batterys;
+    [SerializeField] GameObject screwDriver;
     [SerializeField] GameObject objectivesPanel;
+    [SerializeField] TMP_Text batterysText;
+    [SerializeField] TMP_Text screwDriverText;
+    [SerializeField] TMP_Text killedZombiesText;
     private int letterCount;
-    
-
+    public int batteryCount;
+    public int screwDriverCount;
+    private LevelManager levelManager;
 
     // Start is called before the first frame update
     void Start()
     {
+        levelManager = FindObjectOfType<LevelManager>();
+
+        for(int i = 0; i < batterys.Length; i++)
+        {
+            batterys[i].SetActive(false);
+        }
+       
+        batteryCount = 0;
         letterCount = 0;
+        screwDriver.SetActive(false);
         letter_S.SetActive(false);
         letter_E.SetActive(false);
         letterE.SetActive(false);
@@ -29,11 +43,29 @@ public class ObjectivesManager : MonoBehaviour
 
     private void Update()
     {
-        if(letterCount == 4)
+        if (letterCount == 4)
         {
             objectivesPanel.SetActive(true);
+            TurnOnBatterys();
+            screwDriver.SetActive(true);
+            letterCount = 0;
+        }
+        if(killedZombiesText != null) { killedZombiesText.text = "KILL 30 ZOMBIES "; }
+        if(levelManager.zombiesKilled >= 30) { killedZombiesText.fontStyle = FontStyles.Strikethrough; }
+        if(screwDriverText != null) { screwDriverText.text = "FIND A SCREW DRIVER "; }
+        if(screwDriverCount == 1) { screwDriverText.fontStyle = FontStyles.Strikethrough; }
+        if(batterysText != null) { batterysText.text = "FIND 4 BATTERYS " + batteryCount + " / 4"; }
+        if(batteryCount == 4) { batterysText.fontStyle = FontStyles.Strikethrough; }
+    }
+
+    void TurnOnBatterys()
+    {
+        for (int i = 0; i < batterys.Length; i++)
+        {
+            batterys[i].SetActive(true);
         }
     }
+
     public void Set_S_Active()
     {
         letter_S.SetActive(true);

@@ -5,6 +5,15 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
     [Range(0f, 100f)]
+    [SerializeField] public float letterPickUpSoundFXVolume;
+    [SerializeField] private AudioClip letterPickUpSound;
+    [Range(0f, 100f)]
+    [SerializeField] public float wavestartSoundFXVolume;
+    [SerializeField] private AudioClip waveStartSound;
+    [Range(0f, 100f)]
+    [SerializeField] public float waveEndSoundFXVolume;
+    [SerializeField] private AudioClip waveEndSound;
+    [Range(0f, 100f)]
     [SerializeField] public float itemPickupSoundFXVolume;
     [SerializeField] private AudioClip itemPickUp;
     [Range(0f, 100f)]
@@ -20,11 +29,17 @@ public class AudioManager : MonoBehaviour
     [SerializeField] public float playerYeahSoundFXVolume;
     [SerializeField] private AudioClip yeahSound;
     [Range(0f, 100f)]
+    [SerializeField] public float playerJumpSoundFXVolume;
+    [SerializeField] private AudioClip jumpSound;
+    [Range(0f, 100f)]
     [SerializeField] public float gunSoundFXVolume;
     [SerializeField] private AudioClip gunShot;
     [Range(0f, 100f)]
     [SerializeField] public float playerDieSoundFXVolume;
     [SerializeField] private AudioClip playerDieSound;
+    [Range(0f, 100f)]
+    [SerializeField] public float zombieEndSoundFXVolume;
+    [SerializeField] private AudioClip zombieEndSound;
     [Range(0f, 100f)]
     [SerializeField] public float zombieImpactSoundFXVolume;
     [SerializeField] private AudioClip[] zombieImpacts;
@@ -54,6 +69,25 @@ public class AudioManager : MonoBehaviour
         audioSource.PlayOneShot(itemPickUp, itemPickupSoundFXVolume);
     }
 
+    public void LetterPickUpSound()
+    {
+        audioSource.PlayOneShot(letterPickUpSound, letterPickUpSoundFXVolume);
+    }
+
+    public void PlayerJumpSound()
+    {
+        audioSource.PlayOneShot(jumpSound, playerJumpSoundFXVolume);
+    }
+    public void WaveStartSound()
+    {
+        audioSource.PlayOneShot(waveStartSound, wavestartSoundFXVolume);
+    }
+
+    public void WaveEndSound()
+    {
+        audioSource.PlayOneShot(waveEndSound, waveEndSoundFXVolume);
+    }
+
     public void PlayerYeahSound()
     {
         audioSource.PlayOneShot(yeahSound, playerYeahSoundFXVolume);
@@ -77,6 +111,11 @@ public class AudioManager : MonoBehaviour
     public void HealthPickUpSound()
     {
         audioSource.PlayOneShot(healthPickUp, healthPickupSoundFXVolume);
+    }
+
+    public void ZombieEndSound()
+    {
+        audioSource.PlayOneShot(zombieEndSound, zombieEndSoundFXVolume);
     }
 
     public void NeedAmmoSound()

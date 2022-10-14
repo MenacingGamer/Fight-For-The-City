@@ -120,6 +120,7 @@ public class Zombie : MonoBehaviour
         if (health == 70f || health == 50f || health == 20f) { audioManager.PlayGruntSound(); }
         if (health <= 0 && !isDead)
         {
+            audioManager.ZombieEndSound();
             animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(0), 1f, Time.deltaTime * 10f));
             isDead = true;
             animator.SetBool("isDead", true);
