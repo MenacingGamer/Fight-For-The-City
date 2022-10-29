@@ -25,7 +25,7 @@ public class SpawnItem : MonoBehaviour
  
     public void SpawnHealth()
     {
-        Debug.Log("I SPAWNED" + healthItemPrefab);
+   
         healthSpawnPoint = healthSpawnPoints[Random.Range(0, healthSpawnPoints.Length)];
         Instantiate(healthItemPrefab, healthSpawnPoint.position, Quaternion.identity);
 
@@ -36,7 +36,7 @@ public class SpawnItem : MonoBehaviour
 
     public void SpawnAmmo()
     {
-        Debug.Log("I SPAWNED" + ammoItemPrefab);
+    
         ammoSpawnPoint = ammoSpawnPoints[Random.Range(0, ammoSpawnPoints.Length)];
         Instantiate(ammoItemPrefab, ammoSpawnPoint.position, Quaternion.identity);
       

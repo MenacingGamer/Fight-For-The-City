@@ -5,6 +5,12 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
     [Range(0f, 100f)]
+    [SerializeField] public float fixingMechineSoundFXVolume;
+    [SerializeField] private AudioClip fixingMechineSound;
+    [Range(0f, 100f)]
+    [SerializeField] public float illFixItSoundFXVolume;
+    [SerializeField] private AudioClip illFixItSound;
+    [Range(0f, 100f)]
     [SerializeField] public float letterPickUpSoundFXVolume;
     [SerializeField] private AudioClip letterPickUpSound;
     [Range(0f, 100f)]
@@ -64,6 +70,20 @@ public class AudioManager : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
+    public void FixingMechine()
+    {
+        audioSource.PlayOneShot(fixingMechineSound, fixingMechineSoundFXVolume);
+        audioSource.loop = true;
+    }
+
+    public void StopFixingSound()
+    {
+        audioSource.Stop();
+    }
+    public void IllFixItSound()
+    {
+        audioSource.PlayOneShot(illFixItSound, illFixItSoundFXVolume);
+    }
     public void ItemPickUpSound()
     {
         audioSource.PlayOneShot(itemPickUp, itemPickupSoundFXVolume);

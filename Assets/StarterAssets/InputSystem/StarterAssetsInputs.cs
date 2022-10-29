@@ -16,6 +16,7 @@ namespace StarterAssets
         public bool aim;
         public bool shoot;
 		public bool UnShoot;
+		public bool action;
 
         [Header("Movement Settings")]
 		public bool analogMovement;
@@ -46,6 +47,11 @@ namespace StarterAssets
         public void OnJump(InputValue value)
 		{
 			JumpInput(value.isPressed);
+		}
+
+		public void OnAction(InputValue value)
+		{
+			ActionInput(value.isPressed);
 		}
 
 		public void OnSprint(InputValue value)
@@ -86,6 +92,11 @@ namespace StarterAssets
         {
             pause = newPauseState;
         }
+
+		public void ActionInput(bool newActionState)
+		{
+			action = newActionState;
+		}
 
         public void SprintInput(bool newSprintState)
 		{

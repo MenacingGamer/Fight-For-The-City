@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,7 +10,7 @@ public class Health : MonoBehaviour
     private LevelManager levelManager;
     private Animator animator;
     public int health = 25;
-    private Slider healthBarSlider;
+    public Slider healthBarSlider;
     public bool playerIsDead;
     public GameObject damagePanel;
   
@@ -22,7 +21,7 @@ public class Health : MonoBehaviour
         damagePanel.SetActive(false);
         playerIsDead = false;
         audioManager = GetComponent<AudioManager>();
-        healthBarSlider = FindObjectOfType<Canvas>().GetComponentInChildren<Slider>();
+       // healthBarSlider = FindObjectOfType<Canvas>().GetComponentInChildren<Slider>();
         animator = GetComponent<Animator>();
         levelManager = FindObjectOfType<LevelManager>();    
     }

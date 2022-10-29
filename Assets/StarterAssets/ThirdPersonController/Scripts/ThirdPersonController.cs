@@ -112,7 +112,7 @@ namespace StarterAssets
         private GameObject _mainCamera;
         private AudioManager _audioManager;
         private bool rotateOnMove = true;
-
+        public bool isFixing;
         private const float _threshold = 0.01f;
 
         private bool _hasAnimator;
@@ -141,6 +141,7 @@ namespace StarterAssets
 
         private void Start()
         {
+          
             _audioManager = FindObjectOfType<AudioManager>();
             health = GetComponentInChildren<Health>();
             _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
@@ -163,6 +164,7 @@ namespace StarterAssets
 
         private void Update()
         {
+           
             _hasAnimator = TryGetComponent(out _animator);
             if(health.playerIsDead == false)
             {
@@ -170,7 +172,7 @@ namespace StarterAssets
                 JumpAndGravity();
                 GroundedCheck();
                 Move();
-                if(basicRigidBodyPush.canPush == true)
+                if(basicRigidBodyPush.canPush == true || isFixing == true)
                 {
                  _animator.SetLayerWeight(1, Mathf.Lerp(_animator.GetLayerWeight(0), 0f, Time.deltaTime * 10f));
                 }
@@ -198,8 +200,9 @@ namespace StarterAssets
             {
                 basicRigidBodyPush.canPush = true;
                 _animator.SetBool("isPushing", true);
-                
+
             }
+        
         }
 
         private void OnTriggerExit(Collider other)
@@ -208,8 +211,9 @@ namespace StarterAssets
             {
                 basicRigidBodyPush.canPush = false;
                 _animator.SetBool("isPushing", false);
-             
+
             }
+          
         }
 
         private void GroundedCheck()

@@ -20,7 +20,7 @@ public class ZombieFist : MonoBehaviour
         {
            
             health.TakeDamage(damage);
-            Debug.Log("hitting you");
+       
         }
     }
 }

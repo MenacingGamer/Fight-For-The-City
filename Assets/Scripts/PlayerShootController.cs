@@ -11,6 +11,7 @@ public class PlayerShootController : MonoBehaviour
     [SerializeField] float range = 100f;
     [SerializeField] float fireRate = 15f;
     [SerializeField] float reloadTime = 1f;
+    [SerializeField] float nextTimeToFire = 0;
     [SerializeField] int damage;
     [SerializeField] public int bullets;
     [SerializeField] public int magazineSize;
@@ -23,7 +24,6 @@ public class PlayerShootController : MonoBehaviour
 
     private bool canShoot = true;
     private bool reloading;
-    private float nextTimeToFire = 0;
     private StarterAssetsInputs starterAssetsInputs;
     private AudioManager audioManager;
     private Animator animator;
@@ -45,8 +45,8 @@ public class PlayerShootController : MonoBehaviour
     }
 
     private void Update()
-    {   
-      
+    {
+       
         ammoText.text = "AMMO : " + bullets + "/" + magazineCount;
         if (health.playerIsDead == true || reloading == true)
         {
@@ -69,12 +69,16 @@ public class PlayerShootController : MonoBehaviour
           
          }
 
-         if (starterAssetsInputs.shoot && bullets >= 1)
+         if (starterAssetsInputs.shoot && bullets >= 1 && Time.time >= nextTimeToFire)
          {
-    
-           Shoot();
-         }
-        starterAssetsInputs.shoot = false;
+            nextTimeToFire = Time.time + 1f / fireRate;
+           Shoot(); 
+        }
+        else
+        {
+            starterAssetsInputs.shoot = false;
+        }
+        
     }
 
        public void ReloadNow()
@@ -101,7 +105,7 @@ public class PlayerShootController : MonoBehaviour
 
 
 
-    void Shoot()
+   void Shoot()
     {
        
         bullets--;
@@ -132,8 +136,8 @@ public class PlayerShootController : MonoBehaviour
                     Destroy(hitFX, 2f);
                 }
             }
-       
-        starterAssetsInputs.shoot = false;    
+
+       // yield return new WaitForSeconds(nextTimeToFire);
     }
  
   }

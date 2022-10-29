@@ -47,16 +47,24 @@
                 },
                 {
                     "name": "Shoot",
-                    "type": "Button",
+                    "type": "PassThrough",
                     "id": "693f04c8-e143-490d-a800-f93fb41de9b6",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": ""
                 },
                 {
                     "name": "Pause",
                     "type": "Button",
                     "id": "e95f8385-0906-4b19-9f50-e203b0f1f4a3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "action",
+                    "type": "Button",
+                    "id": "ccd5bd13-f485-4c7e-ac0f-f84bc76ba902",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
@@ -324,6 +332,39 @@
                     "processors": "",
                     "groups": "KeyboardMouse",
                     "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "203270d3-13c9-411d-9eae-7711faf9c5aa",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ec22d468-98ac-4501-92d1-e68efc4d8137",
+                    "path": "<XInputController>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Xbox Controller",
+                    "action": "action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0c67a9b0-73d0-4584-ab30-e0fb1173e9de",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "action",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

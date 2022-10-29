@@ -15,15 +15,17 @@ public class ObjectivesManager : MonoBehaviour
     [SerializeField] GameObject objectivesPanel;
     [SerializeField] TMP_Text batterysText;
     [SerializeField] TMP_Text screwDriverText;
-    [SerializeField] TMP_Text killedZombiesText;
+    [SerializeField] TMP_Text fix4MechinesText;
     private int letterCount;
     public int batteryCount;
     public int screwDriverCount;
     private LevelManager levelManager;
+    private PortalController pC;
 
     // Start is called before the first frame update
     void Start()
     {
+        pC = FindObjectOfType<PortalController>();
         levelManager = FindObjectOfType<LevelManager>();
 
         for(int i = 0; i < batterys.Length; i++)
@@ -43,6 +45,7 @@ public class ObjectivesManager : MonoBehaviour
 
     private void Update()
     {
+      
         if (letterCount == 4)
         {
             objectivesPanel.SetActive(true);
@@ -50,8 +53,8 @@ public class ObjectivesManager : MonoBehaviour
             screwDriver.SetActive(true);
             letterCount = 0;
         }
-        if(killedZombiesText != null) { killedZombiesText.text = "KILL 30 ZOMBIES "; }
-        if(levelManager.zombiesKilled >= 30) { killedZombiesText.fontStyle = FontStyles.Strikethrough; }
+        if(fix4MechinesText != null) { fix4MechinesText.text = "FIX PORTAL MECHINES " + pC.repairedCount + " / 4"; }
+        if(pC.repairedCount == 4) { fix4MechinesText.fontStyle = FontStyles.Strikethrough; }
         if(screwDriverText != null) { screwDriverText.text = "FIND A SCREW DRIVER "; }
         if(screwDriverCount == 1) { screwDriverText.fontStyle = FontStyles.Strikethrough; }
         if(batterysText != null) { batterysText.text = "FIND 4 BATTERYS " + batteryCount + " / 4"; }
