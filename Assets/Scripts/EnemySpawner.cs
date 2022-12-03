@@ -56,7 +56,7 @@ public class EnemySpawner : MonoBehaviour
        for(int i = 0; i < enemysToSpawn; i++)
         {
             Spawn();
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(1f);
         }
         
         levelManager.state = LevelManager.State.fighting;

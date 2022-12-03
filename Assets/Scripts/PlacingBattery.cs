@@ -35,7 +35,7 @@ public class PlacingBattery : MonoBehaviour
             {
                 batPlaceHolder.SetActive(false);
                 battery.SetActive(true);
-                hasPower = true;
+                this.hasPower = true;
                 _input.action = false;
             }
         }

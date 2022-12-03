@@ -9,6 +9,7 @@ public class Zombie : MonoBehaviour
    
      private Transform player;
      private Animator animator;
+   
 
     [SerializeField] public LayerMask whatIsGround, whatIsPlayer;
     [SerializeField] private GameObject fist;
@@ -26,6 +27,11 @@ public class Zombie : MonoBehaviour
     //States
     [SerializeField] public bool playerInSightRange, playerInAttackRange;
     [SerializeField] public float sightRange, attackRange;
+    [SerializeField] public GameObject[] skins;
+    [SerializeField] private GameObject currentSkin;
+    [SerializeField] private GameObject newSkin;
+
+
     public bool isDead;
 
     private LevelManager levelManager;
@@ -34,28 +40,37 @@ public class Zombie : MonoBehaviour
 
     private void Awake()
     {
+        newSkin = skins[Random.Range(0, skins.Length)];
+        currentSkin.SetActive(false);
+        newSkin.SetActive(true);
         levelManager = FindObjectOfType<LevelManager>();
         fist = GetComponentInChildren<ZombieFist>().gameObject;
         isDead = false;
         fist.SetActive(false);
         animator = GetComponent<Animator>();
         enemySpawner = FindObjectOfType<EnemySpawner>();
-        audioManager = GameObject.FindGameObjectWithTag("Player").GetComponent<AudioManager>();
-        player = GameObject.FindGameObjectWithTag("Player").transform;
         agent = GetComponent<NavMeshAgent>();
+        audioManager = FindObjectOfType<AudioManager>();
+        if (levelManager.state == LevelManager.State.endGame) { return; }
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+        
+       
     }
  
     // Update is called once per frame
     void Update()
     {
-       
+        if (levelManager.state == LevelManager.State.endGame) { return; }
         playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
+        
         playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
         if (!isDead)
         {
-           /// if (!playerInSightRange && !playerInAttackRange) Patroling();
-            ChasePlayer();
-            if (playerInAttackRange && playerInSightRange) AttackPlayer();
+            if (!playerInAttackRange) ChasePlayer();
+
+            if (playerInAttackRange && player.position.y < 2f) AttackPlayer();
+
+        
         }
       
 
@@ -89,15 +104,16 @@ public class Zombie : MonoBehaviour
     private void ChasePlayer()
     {
         agent.SetDestination(player.position);
-      //  Debug.Log(player.position);
+        animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(0), 0f, Time.deltaTime * 10f));
+    
     }
 
     private void AttackPlayer()
     {
         agent.SetDestination(transform.position);
+        transform.LookAt(player);     
         animator.SetLayerWeight(1, Mathf.Lerp(animator.GetLayerWeight(1), 1f, Time.deltaTime * 10f));
-        transform.LookAt(player);
-
+    
         if (!alreadyAttacked)
         {
             //Attack here
@@ -108,6 +124,7 @@ public class Zombie : MonoBehaviour
         }
     }
 
+  
     private void ResetAttack()
     {
         TurnFistOFF();
@@ -117,7 +134,7 @@ public class Zombie : MonoBehaviour
     public void TakeDamage(int damage)
     {
         health -= damage;
-        if (health == 70f || health == 50f || health == 20f) { audioManager.PlayGruntSound(); }
+        if (health == 65f || health == 30f) { audioManager.PlayGruntSound(); }
         if (health <= 0 && !isDead)
         {
             audioManager.ZombieEndSound();

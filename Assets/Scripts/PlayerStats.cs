@@ -5,7 +5,12 @@ using UnityEngine;
 public class PlayerStats : MonoBehaviour
 {
     [SerializeField] public string playerName;
-    [SerializeField] public int playerLifes;
+    [SerializeField] public string BestPlayerName;
+    [SerializeField] public int waveReached = 0;
+    [SerializeField] public int zombiesKilled = 0;
+    [SerializeField] public int mostZombiesKilled = 0;
+    [SerializeField] public int bestWaveReached = 0;
+    [SerializeField] public bool escapedLevel = false;
     
     public static PlayerStats Instance;
 
@@ -22,15 +27,5 @@ public class PlayerStats : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

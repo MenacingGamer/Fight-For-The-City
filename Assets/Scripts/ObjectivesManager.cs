@@ -16,6 +16,8 @@ public class ObjectivesManager : MonoBehaviour
     [SerializeField] TMP_Text batterysText;
     [SerializeField] TMP_Text screwDriverText;
     [SerializeField] TMP_Text fix4MechinesText;
+    [SerializeField] TMP_Text pushSatallitesText;
+    [SerializeField] TMP_Text turnOnPortalText;
     private int letterCount;
     public int batteryCount;
     public int screwDriverCount;
@@ -32,7 +34,8 @@ public class ObjectivesManager : MonoBehaviour
         {
             batterys[i].SetActive(false);
         }
-       
+
+        screwDriverCount = 0;
         batteryCount = 0;
         letterCount = 0;
         screwDriver.SetActive(false);
@@ -53,11 +56,15 @@ public class ObjectivesManager : MonoBehaviour
             screwDriver.SetActive(true);
             letterCount = 0;
         }
-        if(fix4MechinesText != null) { fix4MechinesText.text = "FIX PORTAL MECHINES " + pC.repairedCount + " / 4"; }
+        if(turnOnPortalText != null) { turnOnPortalText.text = "TURN ON PORTAL"; }
+        if(pC.portalOn == true) { turnOnPortalText.fontStyle = FontStyles.Strikethrough; }
+        if(pushSatallitesText != null) { pushSatallitesText.text = "PUSH SATALLITES INTO POSITION " + pC.positionCount + " / 2"; }
+        if (pC.positionCount == 2) { pushSatallitesText.fontStyle = FontStyles.Strikethrough; }
+        if (fix4MechinesText != null) { fix4MechinesText.text = "FIX PORTAL GENERATORS " + pC.repairedCount + " / 4"; }
         if(pC.repairedCount == 4) { fix4MechinesText.fontStyle = FontStyles.Strikethrough; }
         if(screwDriverText != null) { screwDriverText.text = "FIND A SCREW DRIVER "; }
         if(screwDriverCount == 1) { screwDriverText.fontStyle = FontStyles.Strikethrough; }
-        if(batterysText != null) { batterysText.text = "FIND 4 BATTERYS " + batteryCount + " / 4"; }
+        if(batterysText != null) { batterysText.text = "FIND BATTERYS " + batteryCount + " / 4"; }
         if(batteryCount == 4) { batterysText.fontStyle = FontStyles.Strikethrough; }
     }
 

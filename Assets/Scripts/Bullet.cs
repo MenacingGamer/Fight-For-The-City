@@ -4,30 +4,22 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    private Rigidbody bulletRigidbody;
-    [SerializeField] Transform bulletFX;
-    [SerializeField] Transform zombieHitFX;
-
-    private void Awake()
-    {
-        bulletRigidbody = GetComponent<Rigidbody>();
-    }
-
+   
     private void Start()
     {
-        float speed = 40f;
-        bulletRigidbody.velocity = transform.forward * speed;
+       
+        
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void Update()
     {
-        if (other.GetComponent<BulletTarget>() != null)
-        {
-            Instantiate(zombieHitFX, transform.position, Quaternion.identity);
-        }
-        else
-        {
-            Instantiate(bulletFX, transform.position, Quaternion.identity);
-        }
+        float speed = 5f;
+        transform.Translate(Vector3.forward * speed);
+        Destroy(gameObject, 0.1f);
+    }
+
+    private void OnTriggerEnter(Collider other) 
+    {
+        Destroy(gameObject);
     }
 }

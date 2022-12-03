@@ -110,6 +110,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: {fileID: 0}
   damage: 10
+--- !u!1 &772492871096301880
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9146131076797202439}
+  m_Layer: 0
+  m_Name: JunkHand
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9146131076797202439
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 772492871096301880}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.467, y: 1.241, z: 0.267}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7476795872503789111}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7476795872504080897
 GameObject:
   m_ObjectHideFlags: 0
@@ -583,6 +613,7 @@ Transform:
   m_Children:
   - {fileID: 7476795872503789109}
   - {fileID: 7476795872503789123}
+  - {fileID: 9146131076797202439}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -644,6 +675,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 7476795871141902752}
+  junkPrefab: {fileID: 635818850755912297, guid: 9ff98cd386c897e4cbf94a908d2fd32b, type: 3}
+  throwHand: {fileID: 9146131076797202439}
   whatIsGround:
     serializedVersion: 2
     m_Bits: 64
@@ -661,6 +694,12 @@ MonoBehaviour:
   playerInAttackRange: 0
   sightRange: 20
   attackRange: 2
+  throwingTime:
+  - 3
+  - 15
+  - 5
+  - 25
+  - 45
   isDead: 0
 --- !u!195 &7476795871141902752
 NavMeshAgent:

@@ -20,7 +20,7 @@ public class Health : MonoBehaviour
     {
         damagePanel.SetActive(false);
         playerIsDead = false;
-        audioManager = GetComponent<AudioManager>();
+        audioManager = FindObjectOfType<AudioManager>();
        // healthBarSlider = FindObjectOfType<Canvas>().GetComponentInChildren<Slider>();
         animator = GetComponent<Animator>();
         levelManager = FindObjectOfType<LevelManager>();    

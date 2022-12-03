@@ -5,6 +5,15 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
     [Range(0f, 100f)]
+    [SerializeField] public float PortalRunningSoundFXVolume;
+    [SerializeField] private AudioClip portalRunningSound;
+    [Range(0f, 100f)]
+    [SerializeField] public float PortalBuildUpSoundFXVolume;
+    [SerializeField] private AudioClip portalBuildUpSound;
+    [Range(0f, 100f)]
+    [SerializeField] public float PortalExploisonSoundFXVolume;
+    [SerializeField] private AudioClip portalExplosionSound;
+    [Range(0f, 100f)]
     [SerializeField] public float fixingMechineSoundFXVolume;
     [SerializeField] private AudioClip fixingMechineSound;
     [Range(0f, 100f)]
@@ -70,6 +79,39 @@ public class AudioManager : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
+    public void PortalRunning()
+    {
+        audioSource.loop = true;
+        audioSource.clip = portalRunningSound;
+        audioSource.volume = PortalRunningSoundFXVolume;
+        audioSource.Play();
+    }
+
+    public void PortalOff()
+    {
+        audioSource.Stop();
+        audioSource.loop = false;
+    }
+
+    public void PortalBuildUp()
+    {
+        audioSource.loop = true;
+        audioSource.clip = portalBuildUpSound; 
+        audioSource.volume = PortalBuildUpSoundFXVolume;
+        audioSource.Play();
+    }
+
+    public void PortalBuildOff()
+    {
+        audioSource.Stop();
+        audioSource.loop = false;
+    }
+
+    public void PortalExplosion()
+    {
+        audioSource.PlayOneShot(portalExplosionSound, PortalExploisonSoundFXVolume);
+    }
+
     public void FixingMechine()
     {
         audioSource.PlayOneShot(fixingMechineSound, fixingMechineSoundFXVolume);
@@ -79,6 +121,7 @@ public class AudioManager : MonoBehaviour
     public void StopFixingSound()
     {
         audioSource.Stop();
+        audioSource.loop = false;
     }
     public void IllFixItSound()
     {

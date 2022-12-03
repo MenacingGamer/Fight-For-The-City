@@ -12,12 +12,40 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] GameObject startGamePanel;
     [SerializeField] TMP_InputField playerNameInput;
     [SerializeField] TMP_Text welcomeText;
+    [SerializeField] TMP_Text goGetThemText;
+    [SerializeField] TMP_Text playerNameText;
+    [SerializeField] TMP_Text bestSuriviorText;
+    [SerializeField] TMP_Text bestSuriviorNameText;
+    [SerializeField] TMP_Text zombiesKilledText;
+    [SerializeField] TMP_Text zombiesKilledNumbersText;
+    [SerializeField] TMP_Text waveReachedText;
+    [SerializeField] TMP_Text waveReachedNumbersText;
     bool isOpen;
+    private string bestPlayer;
+    private int mostZombiesKills;
+    private int mostWaves;
+  
     // Start is called before the first frame update
     void Start()
     {
+        CheckForBestGame();
         playerInputPanel.SetActive(false);
         isOpen = false;
+    }
+
+    public void CheckForBestGame()
+    {
+        bestPlayer = PlayerPrefs.GetString("BestPlayer", "MENACING GAMES");
+        mostWaves = PlayerPrefs.GetInt("Waves", 5);
+        mostZombiesKills = PlayerPrefs.GetInt("ZombiesKilled", 20);
+    
+
+        bestSuriviorNameText.text = "" + bestPlayer;
+        zombiesKilledNumbersText.text = "" + mostZombiesKills;
+        waveReachedNumbersText.text = "" + mostWaves;
+
+   
+
     }
 
     public void NewGamePanel()
@@ -42,20 +70,21 @@ public class MainMenuManager : MonoBehaviour
 
     public void SaveGame()
     {
-        PlayerStats.Instance.playerLifes = 5;
-        PlayerPrefs.SetString("PlayerName_1", PlayerStats.Instance.playerName);
-        PlayerPrefs.SetInt("PlayerLifes_1", PlayerStats.Instance.playerLifes);
+        PlayerPrefs.SetString("PlayerName", PlayerStats.Instance.playerName);
         startGamePanel.SetActive(true);
-        welcomeText.text = "WELCOME " + PlayerStats.Instance.playerName + " NOW GO! SAVE THE CITY FROM THOSE ZOMBIES ";
+        playerNameText.text = "" + PlayerStats.Instance.playerName;
+        welcomeText.text = "WELCOME ";
+        goGetThemText.text = " LOOK FOR 4 LETTERS AROUND THE CITY TO UNLOCK THE HIDDEN LIST. " +
+            "COMPLETE ALL OBJECTIVES ON THE LIST AND ESCAPE THROUGH THE PORTAL TO WIN.  ";
+       
+           
     }
 
     public void Exit()
     {
-#if UNITY_EDITOR
-        EditorApplication.ExitPlaymode();
-#else
-        Application.Quit();  
-#endif
+
+        Application.Quit();
+
     }
 
     public void LoadLevel()

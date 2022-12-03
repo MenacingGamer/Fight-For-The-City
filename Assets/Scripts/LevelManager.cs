@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using StarterAssets;
 using System.Data;
+using Cinemachine;
 
 public class LevelManager : MonoBehaviour
 {
@@ -14,11 +15,13 @@ public class LevelManager : MonoBehaviour
         counting,
         spawning,
         fighting,
+        endGame,
     }
-    
+    [SerializeField] CinemachineVirtualCamera virtualCamera;
     [SerializeField] GameObject PausePanelCanvas;
     [SerializeField] GameObject endLevelCanvas;
     [SerializeField] GameObject _startedWaveText;
+    [SerializeField] TMP_Text suriviorNameText;
     [SerializeField] TMP_Text startedWaveText;
     [SerializeField] TMP_Text waveText;
     [SerializeField] TMP_Text waveCounterText;
@@ -42,7 +45,8 @@ public class LevelManager : MonoBehaviour
 
     private void Awake()
     {
-      //  objectivesManager = FindObjectOfType<ObjectivesManager>();
+        if(PlayerStats.Instance != null) { suriviorNameText.text = "" + PlayerStats.Instance.playerName; }
+        virtualCamera.enabled = false;
         audioManager = FindObjectOfType<AudioManager>();    
         spawnItem = FindObjectOfType<SpawnItem>();
         _input = FindObjectOfType<StarterAssetsInputs>();
@@ -72,6 +76,7 @@ public class LevelManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(state == State.endGame) { return; }
        
         if (_input.pause) 
         {
@@ -197,11 +202,7 @@ public class LevelManager : MonoBehaviour
 
     public void QuitGame()
     {   
-#if UNITY_EDITOR
-            EditorApplication.ExitPlaymode();
-#else
         Application.Quit();  
-#endif
-        
+   
     }
 }

@@ -21,6 +21,8 @@ public class PlayerShootController : MonoBehaviour
     [SerializeField] GameObject zombieHitFX;
     [SerializeField] ParticleSystem muzzleFlash;
     [SerializeField] TMP_Text ammoText;
+    [SerializeField] TrailRenderer bulletTrail;
+    [SerializeField] Transform gunPoint;
 
     private bool canShoot = true;
     private bool reloading;
@@ -37,7 +39,7 @@ public class PlayerShootController : MonoBehaviour
         bullets = magazineSize;
         ammoText.text = "AMMO : " + bullets + "/" + magazineCount;
         health = GetComponentInChildren<Health>();
-        audioManager = GetComponent<AudioManager>();
+        audioManager = FindObjectOfType<AudioManager>();
         starterAssetsInputs = GetComponent<StarterAssetsInputs>();
         animator = GetComponent<Animator>();
         reloading = false;
@@ -63,7 +65,7 @@ public class PlayerShootController : MonoBehaviour
 
         if (starterAssetsInputs.shoot && bullets <= 0)
          {
-             audioManager.EmptyGunSound();
+            audioManager.EmptyGunSound();
             reloading = true;
             StartCoroutine(Reload());
           
@@ -97,17 +99,14 @@ public class PlayerShootController : MonoBehaviour
             magazineCount--;
             starterAssetsInputs.shoot = false;
             reloading = false;
-
-           
+   
         }
 
     }
 
-
-
    void Shoot()
     {
-       
+        
         bullets--;
             muzzleFlash.Play();
             audioManager.GunShotSound();
@@ -116,28 +115,32 @@ public class PlayerShootController : MonoBehaviour
 
             Ray ray = Camera.main.ViewportPointToRay(Vector3.one * 0.5f);
 
-            Debug.DrawRay(ray.origin, ray.direction * 100f, Color.red, 2f);
-
+           
             RaycastHit hitInfo;
 
 
             if (Physics.Raycast(ray, out hitInfo, range, aimColliderLayerMask))
             {
-                if (hitInfo.collider.gameObject.GetComponent<Zombie>() != null)
+            Vector3 aimDir = (hitInfo.point - gunPoint.position).normalized; 
+            Instantiate(bulletTrail, gunPoint.position, Quaternion.LookRotation(aimDir, Vector3.up));
+       
+            if (hitInfo.collider.gameObject.GetComponent<Zombie>() != null)
                 {
-                    audioManager.ZombieImpactSounds();
+
+                audioManager.ZombieImpactSounds();
                     GameObject zomBlood = Instantiate(zombieHitFX, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
                     Destroy(zomBlood, 2f);
                     hitInfo.collider.gameObject.SendMessage("TakeDamage", damage);
                 }
                 else
                 {
-                    GameObject hitFX = Instantiate(bulletFX, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
+            
+                GameObject hitFX = Instantiate(bulletFX, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
                     Destroy(hitFX, 2f);
                 }
             }
 
        // yield return new WaitForSeconds(nextTimeToFire);
     }
- 
+
   }

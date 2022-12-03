@@ -25,7 +25,7 @@ public class FixTheMechine : MonoBehaviour
     private float fixCounter;
     private bool repaired = false;
     public bool isRepairing = false;
-    public Animator animator;
+ 
 
     // Start is called before the first frame update
     void Start()
@@ -52,8 +52,7 @@ public class FixTheMechine : MonoBehaviour
 
        if(battery.hasPower && repaired == true)
         {
-            lazerBeam.SetActive(true);
-            
+            lazerBeam.SetActive(true);       
         }
     }
 
@@ -83,7 +82,7 @@ public class FixTheMechine : MonoBehaviour
                 player.GetComponentInChildren<Animator>().SetBool("isFixing", true);
                 audioManager.FixingMechine();
 
-                if (fixCounter >= 1000f)
+                if (fixCounter >= 500f)
                 {
                     portalController.repairedCount++;
                     isRepairing = false;
